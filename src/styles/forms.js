@@ -3,25 +3,42 @@ import { StyleSheet } from 'react-native';
 const forms = StyleSheet.create({
   container: {
     padding: 30,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   formGroup: {
-    marginBottom: 20,
+    borderBottomColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
+    borderRadius:30,
+    borderBottomWidth: 1,
+    height:45,
+    width: 250,
+    marginBottom:20,
+    flexDirection: 'row',
+    alignItems:'center'
+  },
+  inputIcon: {
+    width:30,
+    height:30,
+    marginLeft:15,
+    justifyContent: 'center'
   },
   formInput: {
     width: '100%',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderStyle: 'solid',
-    borderRadius: 5
+    borderBottomColor: '#FFFFFF',
   },
   buttonHolder: {
-    padding: 15,
-    marginBottom: 20,
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
+    marginBottom:20,
+    width:250,
+    borderRadius:30,
   },
   backgroundOrange: {    
-    backgroundColor: 'orange',
+    backgroundColor: '#ff9501',
   },
   buttonWhite: {    
     color: 'white',
@@ -29,9 +46,8 @@ const forms = StyleSheet.create({
   backgroundWhite: {    
     backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: 'orange',
+    borderColor: '#ff9501',
     borderStyle: 'solid',
-    borderRadius: 5
   },
   buttonOrange: {    
     color: 'orange',

@@ -2,16 +2,22 @@ import React, { useState } from 'react'
 import { 
   View, 
   Text,
+  Image,
   TextInput, 
   TouchableOpacity 
 } from 'react-native';
 import forms from '../styles/forms'
 import { connect, useSelector, useDispatch} from 'react-redux'
+import Toast from 'react-native-simple-toast';
+
 
 function Login({navigation}) {
 
+
   const counter = useSelector(state => state.first);
+  const auth = useSelector(state => state.authenticate);
   const dispatch = useDispatch();
+
 
   /*
   * State
@@ -27,11 +33,15 @@ function Login({navigation}) {
   */
 
   const handleLoginSubmit = () => {
-    if(email === 'admin' && password === 'admin') {
+    if(email === '' && password === '') {
+      dispatch({type: 'LOG_IN'})
       console.log('login successful')
-      navigation.navigate('Home')
+      if(auth.isLogged) {
+        navigation.navigate('Home')
+      } 
     } else {
-      console.log('wrong credentials')
+      Toast.show('wrong credentials.');
+      dispatch({type: 'LOG_OUT'})
     }
   }
 
@@ -52,17 +62,14 @@ function Login({navigation}) {
     backgroundOrange,
     backgroundWhite,
     buttonWhite,
-    buttonOrange
+    buttonOrange,
+    inputIcon,
   } = forms
 
   return (
     <View style={container}>
-
-      <View>
-        
-      </View>
-
       <View style={formGroup}>
+        <Image style={inputIcon} source={{uri: 'https://icons-for-free.com/iconfiles/png/512/email+email+notification+notification+icon-1320165659956528478.png'}}/>
         <TextInput 
           style={formInput}
           placeholder="Email"
@@ -71,6 +78,7 @@ function Login({navigation}) {
         />
       </View>
       <View style={formGroup}>
+        <Image style={inputIcon} source={{uri: 'https://www.pinclipart.com/picdir/middle/175-1755232_create-icons-from-png-jpg-images-online-password.png'}}/>
         <TextInput 
           style={formInput}
           placeholder="Password"
@@ -79,23 +87,17 @@ function Login({navigation}) {
           value={password}
         />
       </View>
-      <TouchableOpacity 
-        onPress={handleLoginSubmit}
-        style={[buttonHolder, backgroundOrange, buttonWhite]}
-      >
+      <TouchableOpacity onPress={handleLoginSubmit} style={[buttonHolder, backgroundOrange, buttonWhite]}>
         <Text style={[button, buttonWhite]}>LOG IN</Text>
       </TouchableOpacity>
-      <TouchableOpacity 
-        onPress={handleSignupSubmit}
-        style={[buttonHolder, backgroundWhite, buttonOrange]}
-      >
+      <TouchableOpacity onPress={handleSignupSubmit} style={[buttonHolder, backgroundWhite, buttonOrange]}>
         <Text style={[button, buttonOrange]}>SIGN UP</Text>
       </TouchableOpacity>
 
 
 
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => dispatch({type: 'Car'})}
       >
         <Text>Car</Text>
@@ -105,7 +107,9 @@ function Login({navigation}) {
          onPress={() => dispatch({type: 'Bike'})}
       >
         <Text>Bike</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      
     </View>
   )
 }
