@@ -16,37 +16,32 @@ import Header from '../components/Header'
 import { ScrollView } from 'react-native-gesture-handler';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
+import axios from 'axios'
 
 function Home({ navigation }) {
 
+  const [branches, setBranches] = useState()
+  const [searchBranch, setSearchBranches] = useState()
+  const [loader, setLoader] = useState(true)
 
-  const [branches, setBranches] = useState(
-    [
-      {id:1,  name: "Mcdo",   image:"https://img.favpng.com/12/1/24/fast-food-mcdonald-s-logo-golden-arches-restaurant-png-favpng-FqDkHQgyYqDyRaha1Xs5qdMwU.jpg",           count:124.711},
-      {id:2,  name: "Jollibee",    image:"https://i.dlpng.com/static/png/438536_thumb.png",       count:234.722},
-      {id:3,  name: "KFC",       image:"https://pngimg.com/uploads/kfc/kfc_PNG37.png", count:324.723} ,
-      {id:4,  name: "Chowking",   image:"https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Chowking_logo_with_CK.png/220px-Chowking_logo_with_CK.png",    count:154.573} ,
-      {id:5,  name: "Burger King",   image:"https://www.alamosa.org/media/com_mtree/images/listings/m/1041.png",        count:124.678} ,
-      {id:6,  name: "Greenwich",   image:"https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Greenwich_pizza.png/220px-Greenwich_pizza.png",        count:124.678} ,
-      {id:7,  name: "Yellow Cab",   image:"https://zaidg.com/ContentFiles/96Logo.png",        count:124.678} ,
-      {id:8,  name: "Taste from the Greens",   image:"https://img.icons8.com/color/100/000000/land-sales.png",        count:124.678} ,
-    ]
-  )
+  React.useEffect(() => {
+    getBranch()
+  }, [])
 
-  const origData = [
-    {id:1,  name: "Mcdo",   image:"https://img.favpng.com/12/1/24/fast-food-mcdonald-s-logo-golden-arches-restaurant-png-favpng-FqDkHQgyYqDyRaha1Xs5qdMwU.jpg",           count:124.711},
-    {id:2,  name: "Jollibee",    image:"https://i.dlpng.com/static/png/438536_thumb.png",       count:234.722},
-    {id:3,  name: "KFC",       image:"https://pngimg.com/uploads/kfc/kfc_PNG37.png", count:324.723} ,
-    {id:4,  name: "Chowking",   image:"https://upload.wikimedia.org/wikipedia/en/thumb/9/9b/Chowking_logo_with_CK.png/220px-Chowking_logo_with_CK.png",    count:154.573} ,
-    {id:5,  name: "Burger King",   image:"https://www.alamosa.org/media/com_mtree/images/listings/m/1041.png",        count:124.678} ,
-    {id:6,  name: "Greenwich",   image:"https://upload.wikimedia.org/wikipedia/en/thumb/3/3e/Greenwich_pizza.png/220px-Greenwich_pizza.png",        count:124.678} ,
-    {id:7,  name: "Yellow Cab",   image:"https://zaidg.com/ContentFiles/96Logo.png",        count:124.678} ,
-    {id:8,  name: "Taste from the Greens",   image:"https://img.icons8.com/color/100/000000/land-sales.png",        count:124.678} ,
-  ]
-
+  function getBranch() {
+    axios.get('https://kumasa-admin.herokuapp.com/api/branch')
+    .then(res => {
+      setBranches(res.data)
+      setSearchBranches(res.data)
+      setLoader(false)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   const searchFilterFunction = (text) => {    
-    const newData = origData.filter(item => {   
+    const newData = searchBranch.filter(item => {   
       const itemData = `${item.name.toString().toUpperCase()}`;
       const textData = text.search.toString().toUpperCase();
       return itemData.indexOf(textData) > -1;    
@@ -58,7 +53,8 @@ function Home({ navigation }) {
     console.log(item.name)
     navigation.navigate('Branch', {
       BranchDetailsName: item.name,
-      BranchDetailsImage: item.image,
+      BranchDetailsImage: item.logo,
+      Branch_ID: item._id,
     })
   }
 
@@ -85,27 +81,31 @@ function Home({ navigation }) {
             onChangeText={(search) => searchFilterFunction({search})}/>
       </View>
       <SafeAreaView style={styles.container}>
-        <FlatList 
-          style={styles.contentList}
-          columnWrapperStyle={styles.listContainer}
-          data={branches}
-          keyExtractor= {(item) => {
-            return item.id;
-          }}
-          renderItem={({item}) => {
-          return (
-            <View style={styles.card}>
-              <Image style={styles.image} source={{uri: item.image}}/>
-              <View style={styles.cardContent}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.count}>{item.count}</Text>
-                <TouchableOpacity style={styles.followButton} 
-                onPress={()=> goToChild(item)}>
-                  <Text style={styles.followButtonText}>Explore now</Text>  
-                </TouchableOpacity>
+        {
+          !loader ? 
+          <FlatList 
+            style={styles.contentList}
+            columnWrapperStyle={styles.listContainer}
+            data={branches}
+            keyExtractor= {(item) => {
+              return item.id;
+            }}
+            renderItem={({item}) => {
+            return (
+              <View style={styles.card}>
+                <Image style={styles.image} source={{uri: item.logo}}/>
+                <View style={styles.cardContent}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.count}>{item.count}</Text>
+                  <TouchableOpacity style={styles.followButton} 
+                  onPress={()=> goToChild(item)}>
+                    <Text style={styles.followButtonText}>Explore now</Text>  
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          )}}/>
+            )}}/>
+            : <Text style={{textAlign:'center'}}>Loading...</Text>
+        }
       </SafeAreaView >
     </>
   );

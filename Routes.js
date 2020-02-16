@@ -34,9 +34,9 @@ function Routes() {
             <Drawer.Navigator initialRouteName="Home">
               <Drawer.Screen name="Home" component={Home} />
               <Drawer.Screen name="Details" component={Details} />
-              {/* <Drawer.Screen name="Profile" component={Profile} />
+              {/* <Drawer.Screen name="Profile" component={Profile} /> */}
               <Drawer.Screen name="OrderHistory" component={OrderHistory} />
-              <Drawer.Screen name="Branch" component={Branch} /> */}
+              <Drawer.Screen name="Branch" component={Branch} />
             </Drawer.Navigator>
           </>
         ) : (
