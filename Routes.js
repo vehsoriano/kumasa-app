@@ -77,7 +77,7 @@ function Routes() {
   return (
     <NavigationContainer>
       {
-         true ? (
+         auth.isLogged ? (
           <>
             <Drawer.Navigator 
               initialRouteName="Home"

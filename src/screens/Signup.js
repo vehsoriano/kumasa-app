@@ -89,7 +89,7 @@ function Signup({navigation}) {
             inputContainerStyle={formInput}
             rightIcon={
               <Icon
-                name='envelope'
+                name='user'
                 size={16}
                 color='#FCD69D'
               />
@@ -106,7 +106,7 @@ function Signup({navigation}) {
             inputContainerStyle={formInput}
             rightIcon={
               <Icon
-                name='envelope'
+                name='user'
                 size={16}
                 color='#FCD69D'
               />
@@ -141,7 +141,7 @@ function Signup({navigation}) {
             keyboardType="numeric"
             rightIcon={
               <Icon
-                name='envelope'
+                name='mobile'
                 size={16}
                 color='#FCD69D'
               />
@@ -159,7 +159,7 @@ function Signup({navigation}) {
             secureTextEntry={true}
             rightIcon={
               <Icon
-                name='envelope'
+                name='lock'
                 size={16}
                 color='#FCD69D'
               />
