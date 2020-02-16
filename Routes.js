@@ -72,11 +72,12 @@ function Routes() {
       </DrawerContentScrollView>
     );
   }
+  // auth.isLogged
 
   return (
     <NavigationContainer>
       {
-        auth.isLogged ? (
+         true ? (
           <>
             <Drawer.Navigator 
               initialRouteName="Home"

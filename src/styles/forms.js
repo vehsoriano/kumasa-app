@@ -4,37 +4,43 @@ const forms = StyleSheet.create({
   container: {
     padding: 30,
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff'
   },
   formGroup: {
     borderBottomColor: '#F5FCFF',
-    backgroundColor: '#FFFFFF',
+    // backgroundColor: '#FFFFFF',
     borderRadius:30,
-    borderBottomWidth: 1,
+    // borderBottomWidth: 1,
     height:45,
-    width: 250,
-    marginBottom:20,
+    // width: 300,
+    marginBottom:40,
     flexDirection: 'row',
-    alignItems:'center'
+    // alignItems:'center'
   },
-  inputIcon: {
-    width:30,
-    height:30,
-    marginLeft:15,
-    justifyContent: 'center'
-  },
+  // inputIcon: {
+  //   width:30,
+  //   height:30,
+  //   marginLeft:15,
+  //   justifyContent: 'center'
+  // },
   formInput: {
     width: '100%',
-    borderBottomColor: '#FFFFFF',
+    // borderBottomWidth: 1,
+    borderBottomColor: '#FCD69D',
   },
+  labelStyle: {
+    color: '#FCD69D'
+  },
+
   buttonHolder: {
     height:45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
+    marginTop:20,
+    width: 315,
     borderRadius:30,
   },
   backgroundOrange: {    

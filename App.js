@@ -7,6 +7,7 @@ import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import vehicle from './src/reducer/cart'
 import auth from './src/reducer/login'
+import { ThemeProvider } from 'react-native-elements';
 
 
 const rootReducer = combineReducers({
@@ -19,7 +20,9 @@ const store = createStore(rootReducer)
 function App() {
   return (
     <Provider store={store}>
-      <Routes />
+      <ThemeProvider>
+        <Routes />
+      </ThemeProvider>
     </Provider>
   );
 }

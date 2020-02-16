@@ -3,12 +3,16 @@ import {
   View, 
   Text,
   Image,
-  TextInput, 
-  TouchableOpacity 
+  // TextInput, 
+  TouchableOpacity,
+  StyleSheet 
 } from 'react-native';
 import forms from '../styles/forms'
 import { connect, useSelector, useDispatch} from 'react-redux'
 import Toast from 'react-native-simple-toast';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Input } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -27,16 +31,20 @@ function Login({navigation}) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-
   /*
   * Methods
   */
- const storeData = async (value) => {
+
+  const storeData = async (value) => {
     try {
       await AsyncStorage.setItem('TOKEN', value) 
     } catch (e) {
       // saving error
     }
+  }
+
+  const forgotPassword = () => {
+    alert('forgot password')
   }
 
   const handleLoginSubmit = () => {
@@ -73,10 +81,6 @@ function Login({navigation}) {
     // }
   }
 
-  const handleSignupSubmit = () => {
-    navigation.navigate('Signup')
-  }
-
   /*
   * Destructured Styles 
   */
@@ -84,6 +88,7 @@ function Login({navigation}) {
   const {
     container,
     formInput,
+    labelStyle,
     formGroup,
     buttonHolder,
     button,
@@ -95,32 +100,64 @@ function Login({navigation}) {
   } = forms
 
   return (
-    <View style={container}>
+    <>
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
+          <Image style={styles.avatar}
+              source={{uri: 'https://i.imgur.com/WNO3kFq.png'}}/>
+        </View> 
+      </View>
+      <View style={container}>
       <View style={formGroup}>
-        <Image style={inputIcon} source={{uri: 'https://icons-for-free.com/iconfiles/png/512/email+email+notification+notification+icon-1320165659956528478.png'}}/>
-        <TextInput 
-          style={formInput}
-          placeholder="Email"
+        <Input
+          label="Email"
+          placeholder='johndoe@gmail.com'
+          labelStyle={labelStyle}
+          inputContainerStyle={formInput}
+          rightIcon={
+            <Icon
+              name='envelope'
+              size={16}
+              color='#FCD69D'
+            />
+          }
           onChangeText={(email) => setEmail(email)}
           value={email}
         />
       </View>
       <View style={formGroup}>
-        <Image style={inputIcon} source={{uri: 'https://www.pinclipart.com/picdir/middle/175-1755232_create-icons-from-png-jpg-images-online-password.png'}}/>
-        <TextInput 
-          style={formInput}
-          placeholder="Password"
+        <Input
+          label="Password"
+          placeholder='********'
+          labelStyle={labelStyle}
+          inputContainerStyle={formInput}
           secureTextEntry={true}
+          rightIcon={
+            <Icon
+              name='envelope'
+              size={16}
+              color='#FCD69D'
+            />
+          }
           onChangeText={(password) => setPassword(password)}
           value={password}
         />
       </View>
       <TouchableOpacity onPress={handleLoginSubmit} style={[buttonHolder, backgroundOrange, buttonWhite]}>
-        <Text style={[button, buttonWhite]}>LOG IN</Text>
+        <Text style={[button, buttonWhite]}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleSignupSubmit} style={[buttonHolder, backgroundWhite, buttonOrange]}>
-        <Text style={[button, buttonOrange]}>SIGN UP</Text>
-      </TouchableOpacity>
+      
+      <Text 
+        style={{marginTop: 20}}
+        onPress={() => forgotPassword()}
+        >Forgot Password?
+      </Text>
+      <Text style={{marginTop: 10}}>Don't have an account? &nbsp;  
+        <Text 
+          style={{textDecorationLine: 'underline'}}
+          onPress={() => navigation.navigate('Signup')}
+        >Sign Up</Text>
+      </Text>
 
       {/* <TouchableOpacity
         onPress={() => dispatch({type: 'Car'})}
@@ -134,6 +171,7 @@ function Login({navigation}) {
         <Text>Bike</Text>
       </TouchableOpacity> */}
     </View>
+    </>
   )
 }
 
@@ -143,3 +181,26 @@ export default Login
 
 
 
+const styles = StyleSheet.create({
+  name:{
+    fontSize:22,
+    color:"#ff9501",
+    fontWeight:'600',
+  },
+  header:{
+    backgroundColor: "#FCFAF6",
+    // height: 200,
+  },
+  headerContent:{
+    padding:30,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 160,
+    height: 160,
+    // borderRadius: 63,
+    // borderWidth: 4,
+    // borderColor: "white",
+    // marginBottom:10,
+  }
+})
