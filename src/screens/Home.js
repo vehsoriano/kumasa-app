@@ -88,7 +88,7 @@ function Home({ navigation }) {
             columnWrapperStyle={styles.listContainer}
             data={branches}
             keyExtractor= {(item) => {
-              return item.id;
+              return item._id;
             }}
             renderItem={({item}) => {
             return (

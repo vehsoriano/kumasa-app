@@ -9,12 +9,13 @@ import {
 import forms from '../styles/forms'
 import { connect, useSelector, useDispatch} from 'react-redux'
 import Toast from 'react-native-simple-toast';
-
+import axios from 'axios'
+import AsyncStorage from '@react-native-community/async-storage';
 
 function Login({navigation}) {
 
 
-  const counter = useSelector(state => state.first);
+  // const counter = useSelector(state => state.first);
   const auth = useSelector(state => state.authenticate);
   const dispatch = useDispatch();
 
@@ -25,24 +26,51 @@ function Login({navigation}) {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [value, setValue] = useState(1)
 
 
   /*
   * Methods
   */
+ const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('TOKEN', value) 
+    } catch (e) {
+      // saving error
+    }
+  }
 
   const handleLoginSubmit = () => {
-    if(email === '' && password === '') {
-      dispatch({type: 'LOG_IN'})
-      console.log('login successful')
-      if(auth.isLogged) {
-        navigation.navigate('Home')
-      } 
-    } else {
-      Toast.show('wrong credentials.');
-      dispatch({type: 'LOG_OUT'})
-    }
+    // if(email === '' && password === '') {
+    //   dispatch({type: 'LOG_IN'})
+    //   console.log('login successful')
+
+      const req = {
+        email,
+        password
+      }
+      
+      axios.post('https://kumasa-admin.herokuapp.com/api/auth', req)
+      .then(res => {
+          storeData(res.data.token)
+          dispatch({type: 'LOG_IN'})
+          if(auth.isLogged) {     
+            navigation.navigate('Home')     
+          } 
+        })
+        .catch(err => {
+          console.log(err.response.data.errors[0].msg)
+          Toast.show(err.response.data.errors[0].msg);
+        })
+
+      // if(auth.isLogged) {
+      //   navigation.navigate('Home')
+      // } 
+    // } 
+    
+    // else {
+    //   Toast.show('wrong credentials.');
+    //   dispatch({type: 'LOG_OUT'})
+    // }
   }
 
   const handleSignupSubmit = () => {
@@ -94,9 +122,6 @@ function Login({navigation}) {
         <Text style={[button, buttonOrange]}>SIGN UP</Text>
       </TouchableOpacity>
 
-
-
-
       {/* <TouchableOpacity
         onPress={() => dispatch({type: 'Car'})}
       >
@@ -108,8 +133,6 @@ function Login({navigation}) {
       >
         <Text>Bike</Text>
       </TouchableOpacity> */}
-
-      
     </View>
   )
 }
