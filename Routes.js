@@ -19,6 +19,7 @@ import Signup from './src/screens/Signup'
 import Profile from './src/screens/Profile'
 import OrderHistory from './src/screens/OrderHistory'
 import Branch from './src/screens/Branch'
+import Cart from './src/screens/Cart'
 import AsyncStorage from '@react-native-community/async-storage';
 
 const Stack = createStackNavigator();
@@ -68,7 +69,7 @@ function Routes() {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="Signout" onPress={() => logout()} />
+        {/* <DrawerItem label="Signout" onPress={() => logout()} /> */}
       </DrawerContentScrollView>
     );
   }
@@ -87,7 +88,20 @@ function Routes() {
               <Drawer.Screen name="Details" component={Details} />
               {/* <Drawer.Screen name="Profile" component={Profile} /> */}
               <Drawer.Screen name="OrderHistory" component={OrderHistory} />
-              <Drawer.Screen name="Branch" component={Branch} />
+              <Drawer.Screen 
+                name="Cart" 
+                component={Cart}                 
+                options={{ 
+                  drawerLabel: () => null 
+                }}      
+              />
+              <Drawer.Screen 
+                name="Branch" 
+                component={Branch}                 
+                options={{ 
+                  drawerLabel: () => null 
+                }}      
+              />       
             </Drawer.Navigator>
           </>
         ) : (

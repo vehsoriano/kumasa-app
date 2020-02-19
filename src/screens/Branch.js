@@ -16,11 +16,11 @@ let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
 
 function Branch({route}) {
+
   const { BranchDetailsName, BranchDetailsImage, Branch_ID } = route.params;
   const [itemList, setItemList] = useState()
   const [searchItemList, setSearchItemList] = useState()
   const [loader, setLoader] = useState(true)
-
   React.useEffect(() => {
     console.log('change route')
     setLoader(true)
@@ -41,6 +41,20 @@ function Branch({route}) {
 
   const addProductToCart = (product) => {
     console.log(product)
+  }
+
+
+  const [viewWidth, setViewWidth] = useState(0)
+  const [viewHeight, setViewHeight] = useState(0)
+
+  function find_dimesions(layout){
+    const {x, y, width, height} = layout;
+    // console.warn(x);
+    // console.warn(y);
+    // console.log(width);
+    setViewWidth(width)
+    setViewHeight(height)
+    // console.warn(height);
   }
 
   // console.log(loader)
@@ -80,12 +94,15 @@ function Branch({route}) {
                 const item = post.item;
 
                 return (
-                  <View style={styles.card}>                
+                  <View 
+                    onLayout={(event) => { find_dimesions(event.nativeEvent.layout) }}
+                    style={styles.card}
+                  >                
                     <View style={styles.cardHeader}>
                       <View>
                         <Text style={styles.title}>{item.item_name}</Text>
                         <Text style={styles.price}>{item.price}</Text>
-                      </View>
+                      </View>                        
                     </View>
                     <Image style={styles.cardImage} source={{uri:item.logo}}/>
                     <View style={styles.cardFooter}>
@@ -103,7 +120,31 @@ function Branch({route}) {
                           </TouchableOpacity>
                         </View> */}
                       </View>
-                    </View>                
+                    </View>  
+                    { 
+                      item.status === "Available" ? (
+                        null
+                      ) : (
+                        <View style={{
+                          position: 'absolute',
+                          backgroundColor: 'rgba(0,0,0,.65)',
+                          height: viewHeight,
+                          width: viewWidth,
+                          zIndex: 100,   
+                          alignContent: 'center',
+                          justifyContent: 'center'                    
+                        }}>
+                          <Text style={{
+                            color: '#fff',
+                            backgroundColor:'red',
+                            textAlign: 'center',
+                            fontSize: 20
+                            
+                            
+                          }}>{item.status}</Text>
+                        </View>  
+                      )
+                    }              
                   </View>
                 )            
             }}/> 
@@ -114,6 +155,9 @@ function Branch({route}) {
     </View>
   )
 }
+
+
+
 
 export default Branch
 
@@ -135,6 +179,7 @@ const styles = StyleSheet.create({
   },
   /******** card **************/
   card:{
+    position: 'relative',
     shadowColor: '#00000021',
     shadowOffset: {
       width: 2
@@ -249,3 +294,6 @@ const styles = StyleSheet.create({
     width: ScreenWidth,
   },
 });
+
+
+
