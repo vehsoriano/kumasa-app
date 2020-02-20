@@ -14,8 +14,9 @@ import {
 } from 'react-native';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
+import Header from '../components/Header'
 
-function Branch({route}) {
+function Branch({route, navigation}) {
 
   const { BranchDetailsName, BranchDetailsImage, Branch_ID } = route.params;
   const [itemList, setItemList] = useState()
@@ -60,99 +61,103 @@ function Branch({route}) {
   // console.log(loader)
   
   return (
-    <View style={styles.container}>
-        <View style={styles.holderBanner}>
-          {
-            BranchDetailsName ? (          
-              <ImageBackground  
-                source={{uri: `${BranchDetailsImage}`}}
-                style={styles.holdeBannerText}>
-                <Text style={styles.bannerText}>{BranchDetailsName}</Text>
-              </ImageBackground >
-            ) : 
-            (null)
-          }
-        </View>
-        {
-          !loader ? 
-          (
-            itemList.length !== 0 ?
-            <FlatList style={styles.list}
-              contentContainerStyle={styles.listContainer}
-              data={itemList}
-              horizontal={false}
-              numColumns={2}
-              keyExtractor= {(item) => {
-                return item.id;
-              }}
-              ItemSeparatorComponent={() => {
-                return (
-                  <View style={styles.separator}/>
-                )
-              }}
-              renderItem={(post) => {
-                const item = post.item;
+    <>    
+      <Header navigationProps={navigation}/>
 
-                return (
-                  <View 
-                    onLayout={(event) => { find_dimesions(event.nativeEvent.layout) }}
-                    style={styles.card}
-                  >                
-                    <View style={styles.cardHeader}>
-                      <View>
-                        <Text style={styles.title}>{item.item_name}</Text>
-                        <Text style={styles.price}>{item.price}</Text>
-                      </View>                        
-                    </View>
-                    <Image style={styles.cardImage} source={{uri:item.logo}}/>
-                    <View style={styles.cardFooter}>
-                      <View style={styles.socialBarContainer}>
-                        <View style={styles.socialBarSection}>
-                          <TouchableOpacity style={styles.socialBarButton} onPress={() => addProductToCart(post)}>
-                            <Image style={styles.icon} source={{uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png'}}/>
-                            <Text style={[styles.socialBarLabel, styles.buyNow]}>Add To Cart</Text>
-                          </TouchableOpacity>
-                        </View>
-                        {/* <View style={styles.socialBarSection}>
-                          <TouchableOpacity style={styles.socialBarButton}>
-                            <Image style={styles.icon} source={{uri: 'https://png.icons8.com/color/50/000000/hearts.png'}}/>
-                            <Text style={styles.socialBarLabel}>25</Text>
-                          </TouchableOpacity>
-                        </View> */}
+      <View style={styles.container}>
+          <View style={styles.holderBanner}>
+            {
+              BranchDetailsName ? (          
+                <ImageBackground  
+                  source={{uri: `${BranchDetailsImage}`}}
+                  style={styles.holdeBannerText}>
+                  <Text style={styles.bannerText}>{BranchDetailsName}</Text>
+                </ImageBackground >
+              ) : 
+              (null)
+            }
+          </View>
+          {
+            !loader ? 
+            (
+              itemList.length !== 0 ?
+              <FlatList style={styles.list}
+                contentContainerStyle={styles.listContainer}
+                data={itemList}
+                horizontal={false}
+                numColumns={2}
+                keyExtractor= {(item) => {
+                  return item.id;
+                }}
+                ItemSeparatorComponent={() => {
+                  return (
+                    <View style={styles.separator}/>
+                  )
+                }}
+                renderItem={(post) => {
+                  const item = post.item;
+
+                  return (
+                    <View 
+                      onLayout={(event) => { find_dimesions(event.nativeEvent.layout) }}
+                      style={styles.card}
+                    >                
+                      <View style={styles.cardHeader}>
+                        <View>
+                          <Text style={styles.title}>{item.item_name}</Text>
+                          <Text style={styles.price}>{item.price}</Text>
+                        </View>                        
                       </View>
-                    </View>  
-                    { 
-                      item.status === "Available" ? (
-                        null
-                      ) : (
-                        <View style={{
-                          position: 'absolute',
-                          backgroundColor: 'rgba(0,0,0,.65)',
-                          height: viewHeight,
-                          width: viewWidth,
-                          zIndex: 100,   
-                          alignContent: 'center',
-                          justifyContent: 'center'                    
-                        }}>
-                          <Text style={{
-                            color: '#fff',
-                            backgroundColor:'red',
-                            textAlign: 'center',
-                            fontSize: 20
-                            
-                            
-                          }}>{item.status}</Text>
-                        </View>  
-                      )
-                    }              
-                  </View>
-                )            
-            }}/> 
-            : <Text style={{textAlign:'center'}}>Empty</Text>
-          )
-          : <Text style={{textAlign:'center'}}>Loading...</Text>
-        }
-    </View>
+                      <Image style={styles.cardImage} source={{uri:item.logo}}/>
+                      <View style={styles.cardFooter}>
+                        <View style={styles.socialBarContainer}>
+                          <View style={styles.socialBarSection}>
+                            <TouchableOpacity style={styles.socialBarButton} onPress={() => addProductToCart(post)}>
+                              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png'}}/>
+                              <Text style={[styles.socialBarLabel, styles.buyNow]}>Add To Cart</Text>
+                            </TouchableOpacity>
+                          </View>
+                          {/* <View style={styles.socialBarSection}>
+                            <TouchableOpacity style={styles.socialBarButton}>
+                              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/color/50/000000/hearts.png'}}/>
+                              <Text style={styles.socialBarLabel}>25</Text>
+                            </TouchableOpacity>
+                          </View> */}
+                        </View>
+                      </View>  
+                      { 
+                        item.status === "Available" ? (
+                          null
+                        ) : (
+                          <View style={{
+                            position: 'absolute',
+                            backgroundColor: 'rgba(0,0,0,.65)',
+                            height: viewHeight,
+                            width: viewWidth,
+                            zIndex: 11,   
+                            alignContent: 'center',
+                            justifyContent: 'center'                    
+                          }}>
+                            <Text style={{
+                              color: '#fff',
+                              backgroundColor:'red',
+                              textAlign: 'center',
+                              fontSize: 20
+                              
+                              
+                            }}>{item.status}</Text>
+                          </View>  
+                        )
+                      }              
+                    </View>
+                  )            
+              }}/> 
+              : <Text style={{textAlign:'center'}}>Empty</Text>
+            )
+            : <Text style={{textAlign:'center'}}>Loading...</Text>
+          }
+      </View>
+    </>
   )
 }
 
@@ -165,7 +170,7 @@ export default Branch
 const styles = StyleSheet.create({
   container:{
     flex:1,
-    // marginTop:20,
+    // marginTop:50,
   },
   list: {
     paddingHorizontal: 5,
@@ -272,6 +277,7 @@ const styles = StyleSheet.create({
   holderBanner: {
     position: 'relative',
     height: 200,
+    zIndex: 9,
   },
   holdeBannerText: {
     position: 'absolute',

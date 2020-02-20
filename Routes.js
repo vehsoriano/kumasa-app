@@ -25,10 +25,15 @@ import AsyncStorage from '@react-native-community/async-storage';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 import { connect, useSelector, useDispatch} from 'react-redux'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function Routes() { 
   const auth = useSelector(state => state.authenticate);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getToken()
+  }, [])
 
   async function getToken(){
     try {
@@ -56,11 +61,7 @@ function Routes() {
   const logout = () => {
     dispatch({type: 'LOG_OUT'})
     removeToken()
-  }
-
-  useEffect(() => {
-    getToken()
-  }, [])
+  }  
 
   console.log(auth.isLogged)
 
@@ -68,8 +69,20 @@ function Routes() {
   function CustomDrawerContent(props) {
     return (
       <DrawerContentScrollView {...props}>
+        <View>
+          <Text>
+            asdasdasdasd
+          </Text>
+        </View>
         <DrawerItemList {...props} />
         {/* <DrawerItem label="Signout" onPress={() => logout()} /> */}
+        <View>
+          <TouchableOpacity onPress={() => logout()}>
+            <Text>
+              Signout
+            </Text>
+          </TouchableOpacity>
+        </View>
       </DrawerContentScrollView>
     );
   }
@@ -99,7 +112,7 @@ function Routes() {
                 name="Branch" 
                 component={Branch}                 
                 options={{ 
-                  drawerLabel: () => null 
+                  drawerLabel: () => null ,
                 }}      
               />       
             </Drawer.Navigator>

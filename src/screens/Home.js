@@ -60,7 +60,7 @@ function Home({ navigation }) {
 
   return (
     <>
-      {/* <Header navigationProps={navigation}/> */}
+      <Header navigationProps={navigation} />
       
       <View style={styles.holderBanner}>
         <ImageBackground  
@@ -119,6 +119,8 @@ const styles = StyleSheet.create({
   holderBanner: {
     position: 'relative',
     height: 200,
+    // marginTop: 50,
+    zIndex: -1,
   },
   holdeBannerText: {
     position: 'absolute',
@@ -131,6 +133,7 @@ const styles = StyleSheet.create({
     margin: 'auto',
     paddingBottom: 40,
     backgroundColor: 'red',
+    zIndex: 10,
   },
   bannerText: {
     fontSize:25,

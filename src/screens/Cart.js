@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  SafeAreaView,
   FlatList,
   Animated
 } from 'react-native';
@@ -17,79 +18,117 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 function Cart({navigation}) {
 
-  const arr = [
-    {
-      id: 'x123aazzzz',  
-      name: "Toblerone",   
-      date:"12 jan", 
-      time:'11:14 am', 
-      video:false, 
-      initialQuantity: 1,
-      price: 500,
-      image:"https://bootdey.com/img/Content/avatar/avatar7.png"
-    }, 
-    {
-      id:2,  
-      name: "Hersheys",   
-      date:"12 jan", 
-      time:'11:14 am', 
-      video:false, 
-      initialQuantity: 1,
-      price: 100,
-      image:"https://bootdey.com/img/Content/avatar/avatar7.png"
-    }, 
-  ]
-
-  const [calls, setCalls] = useState({})
+  
+  const [calls, setCalls] = useState(
+    [
+      {
+        _id: 'asdasd',
+        item_branch_id: "5e444857b975092894e7178f",
+        item_name: "steak",
+        logo: "https://i.imgur.com/eTasrEG.png",
+        price: 100,
+        initialQuantity: 1,
+        status: "Available",
+        updated_at: "2020-02-15T14:54:00.799Z"
+      },
+      {
+        _id: 'aaaaa',
+        item_branch_id: "5e444857b975092894e7178f",
+        item_name: "steaky pork",
+        logo: "https://i.imgur.com/eTasrEG.png",
+        price: 300,
+        initialQuantity: 1,
+        status: "Available",
+        updated_at: "2020-02-15T14:54:00.799Z"
+      },
+      {
+        _id: 'asd111',
+        item_branch_id: "5e444857b975092894e7178f",
+        item_name: "steaky pork",
+        logo: "https://i.imgur.com/eTasrEG.png",
+        price: 300,
+        initialQuantity: 1,
+        status: "Available",
+        updated_at: "2020-02-15T14:54:00.799Z"
+      }
+    ]
+  )
   const [total, setTotal] = useState(0)
 
-  React.useEffect(() => {
-    setCalls({test: arr})
-  }, [])  
-
-
-  const getTotal = () => {
-    // console.log('total')
-    console.log(calls)
-    if(Object.keys(calls).length === 0) {
-    } else {
-      var myTotal = calls.test.reduce(function(prev, cur) {
-        return (prev.price * prev.initialQuantity) + (cur.price * cur.initialQuantity)
-      })
-  
-      console.log(myTotal)
-      setTotal(myTotal)
+  function addTemp() {
+    const b= {
+      _id: '234',
+      item_branch_id: "5e444857b975092894e7178f",
+      item_name: "sisig",
+      logo: "https://i.imgur.com/eTasrEG.png",
+      price: "50",
+      initialQuantity: 1,
+      status: "Available",
+      updated_at: "2020-02-15T14:54:00.799Z"
     }
+
+    setCalls([...calls, b])
   }
 
   React.useEffect(() => {
     getTotal()
   }, [calls])
 
+  function getTotal() {
+    if(Object.keys(calls).length === 0) {
+      // console.log('no data')
+    } 
+    
+    // else if(Object.keys(calls).length === 1) {
+    //   // console.log('has one data') 
+    //   var singleTotal = calls[0].initialQuantity * calls[0].price 
+    //   setTotal(singleTotal)
+    // } 
+    
+    else {
+      // console.log('has many data')
+      let sum = function(items, prop, qua){
+        return items.reduce( function(a, b){
+          return a + (b[prop] * b[qua]);
+        }, 0);
+      }
+      const total = sum(calls, 'price', 'initialQuantity')
+      setTotal(total)
+    }
+  }  
+
   function increaseQty(id) {
     // console.log('increase + 1')
     setCalls((state) => {
-      let val = state.test.find(x => x.id === id)
+      // console.log(state)
+      let val = state.find(x => x._id === id)
       val.initialQuantity++
-      return({
+      return([
         ...state
-      })
+        ]
+      )
     })
   }
 
   function decreaseQty(id) {
     // console.log('decrease - 1')
     setCalls((state) => {
-      let val = state.test.find(x => x.id === id)
-      val.initialQuantity--
-      return({
+      let delVal = state.find(x => x._id === id)
+      delVal.initialQuantity--
+      return([
         ...state
-      })
+      ])
     })
   }
 
+  // console.log(calls)
+
   function checkoutOrder() {
     console.log('checkout')
+    calls.map((item, i) => {
+      console.log(item._id)
+      console.log(item.initialQuantity)
+    })
   }
 
   function cancelCheckout() {
@@ -98,13 +137,12 @@ function Cart({navigation}) {
 
   return (
     <>
-      <ScrollView>
-        <View>
+      <ScrollView style={styles.scrollViewHolder}>
         <SwipeListView 
-          data={calls.test}          
+          data={calls}          
           disableRightSwipe
           keyExtractor = {(item) => {
-            return item.id;
+            return item._id;
           }}
           renderItem={(post, rowMap) => {
             const item = post.item;
@@ -112,10 +150,10 @@ function Cart({navigation}) {
             // console.log(total)
             return (
               <View style={styles.row}>
-                <Image source={{ uri: item.image }} style={styles.pic} />
+                <Image source={{ uri: item.logo }} style={styles.pic} />
                 <View>
                   <View style={styles.nameContainer}>
-                    <Text style={styles.nameTxt}>{item.name}</Text>
+                    <Text style={styles.nameTxt}>{item.item_name}</Text>
                   </View>
                   <View style={styles.end}>
                     {/* <Image style={[styles.icon, {marginLeft:15, marginRight:5, width:14, height:14}]} source={{uri:"https://img.icons8.com/small/14/000000/double-tick.png"}}/> */}
@@ -125,7 +163,7 @@ function Cart({navigation}) {
                 <View style={styles.buttonContainer}>
                   <View style={styles.buttonHolder1}>
                     <TouchableOpacity
-                      onPress={() => increaseQty(item.id)}
+                      onPress={() => increaseQty(item._id)}
                     >
                       <Icon
                         name='plus-circle'
@@ -137,7 +175,7 @@ function Cart({navigation}) {
                   <Text style={styles.holderQuantity}>{item.initialQuantity}</Text>
                   <View style={styles.buttonHolder2}>
                     <TouchableOpacity                    
-                      onPress={() => decreaseQty(item.id)}
+                      onPress={() => decreaseQty(item._id)}
                       disabled={item.initialQuantity === 1 ? true : false}
                     >
                       <Icon
@@ -169,11 +207,14 @@ function Cart({navigation}) {
           )}
           rightOpenValue={-75}
           />
-        </View>
         <View style={styles.bottomTotalHolder}>
           <Text style={styles.totalText}>Total: Php{total}</Text>
         </View> 
-      </ScrollView>  
+        <TouchableOpacity onPress={() => addTemp()}>
+            <Text>Add Temp Item</Text>
+        </TouchableOpacity>
+      </ScrollView> 
+       
       <View style={styles.checkoutHolder}>
         <TouchableOpacity 
           style={styles.checkoutTextHolder}
@@ -196,6 +237,9 @@ export default Cart
 
 
 const styles = StyleSheet.create({
+  scrollViewHolder: {
+    marginBottom: 60
+  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
