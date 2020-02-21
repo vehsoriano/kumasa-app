@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   View, 
   Text,
@@ -11,6 +11,8 @@ import {
   FlatList,
   Animated
 } from 'react-native';
+import axios from 'axios'
+import AsyncStorage from '@react-native-community/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view';
 let screenWidth = Dimensions.get('window').width;
@@ -19,64 +21,49 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 function Cart({navigation}) {
 
   
-  const [calls, setCalls] = useState(
-    [
-      {
-        _id: 'asdasd',
-        item_branch_id: "5e444857b975092894e7178f",
-        item_name: "steak",
-        logo: "https://i.imgur.com/eTasrEG.png",
-        price: 100,
-        initialQuantity: 1,
-        status: "Available",
-        updated_at: "2020-02-15T14:54:00.799Z"
-      },
-      {
-        _id: 'aaaaa',
-        item_branch_id: "5e444857b975092894e7178f",
-        item_name: "steaky pork",
-        logo: "https://i.imgur.com/eTasrEG.png",
-        price: 300,
-        initialQuantity: 1,
-        status: "Available",
-        updated_at: "2020-02-15T14:54:00.799Z"
-      },
-      {
-        _id: 'asd111',
-        item_branch_id: "5e444857b975092894e7178f",
-        item_name: "steaky pork",
-        logo: "https://i.imgur.com/eTasrEG.png",
-        price: 300,
-        initialQuantity: 1,
-        status: "Available",
-        updated_at: "2020-02-15T14:54:00.799Z"
-      }
-    ]
-  )
+  const [cart, setCart] = useState([])
   const [total, setTotal] = useState(0)
+  const [userID, setUserID] = useState('')
 
-  function addTemp() {
-    const b= {
-      _id: '234',
-      item_branch_id: "5e444857b975092894e7178f",
-      item_name: "sisig",
-      logo: "https://i.imgur.com/eTasrEG.png",
-      price: "50",
-      initialQuantity: 1,
-      status: "Available",
-      updated_at: "2020-02-15T14:54:00.799Z"
-    }
+  useEffect(() => {
+    getBranchItems()
+  }, [])
 
-    setCalls([...calls, b])
+  function getBranchItems() {
+    axios.get(`https://kumasa-admin.herokuapp.com/api/item/branch/5e48f7bb2308b03418f57c5b`)
+    .then(res => {
+      setCart(res.data)
+      // console.log(res.data)
+      // setSearchItemList(res.data)
+      // setLoader(false)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
-  React.useEffect(() => {
+  function addTemp() {
+    // const b= {
+    //   _id: '234',
+    //   item_branch_id: "5e444857b975092894e7178f",
+    //   item_name: "sisig",
+    //   logo: "https://i.imgur.com/eTasrEG.png",
+    //   price: "50",
+    //   initialQuantity: "1",
+    //   status: "Available",
+    //   updated_at: "2020-02-15T14:54:00.799Z"
+    // }
+
+    // setCalls([...calls, b])
+  }
+
+  useEffect(() => {
     getTotal()
-  }, [calls])
+  }, [cart])
 
   function getTotal() {
-    if(Object.keys(calls).length === 0) {
-      // console.log('no data')
+    if(Object.keys(cart).length === 0) {
+      console.log('no data')
     } 
     
     // else if(Object.keys(calls).length === 1) {
@@ -92,14 +79,14 @@ function Cart({navigation}) {
           return a + (b[prop] * b[qua]);
         }, 0);
       }
-      const total = sum(calls, 'price', 'initialQuantity')
+      const total = sum(cart, 'price', 'initialQuantity')
       setTotal(total)
     }
   }  
 
   function increaseQty(id) {
     // console.log('increase + 1')
-    setCalls((state) => {
+    setCart((state) => {
       // console.log(state)
       let val = state.find(x => x._id === id)
       val.initialQuantity++
@@ -112,7 +99,7 @@ function Cart({navigation}) {
 
   function decreaseQty(id) {
     // console.log('decrease - 1')
-    setCalls((state) => {
+    setCart((state) => {
       let delVal = state.find(x => x._id === id)
       delVal.initialQuantity--
       return([
@@ -121,13 +108,44 @@ function Cart({navigation}) {
     })
   }
 
-  // console.log(calls)
+  async function getToken(){
+    try {
+      const value = await AsyncStorage.getItem('USER_ID')
+      if(value !== null) {
+        setUserID(value)
+      } else {
+        // console.log('null')
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  useEffect(() => {
+    getToken()
+  }, [])
+
+
+  // console.log(cart)
 
   function checkoutOrder() {
     console.log('checkout')
-    calls.map((item, i) => {
+    console.log(userID)
+    cart.map((item, i) => {     
       console.log(item._id)
       console.log(item.initialQuantity)
+      
+      const req = {
+        order_item_id: item._id,
+        qty: item.initialQuantity
+      }
+      axios.post(`https://kumasa-admin.herokuapp.com/api/order/${userID}`, req)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     })
   }
 
@@ -139,7 +157,7 @@ function Cart({navigation}) {
     <>
       <ScrollView style={styles.scrollViewHolder}>
         <SwipeListView 
-          data={calls}          
+          data={cart}          
           disableRightSwipe
           keyExtractor = {(item) => {
             return item._id;

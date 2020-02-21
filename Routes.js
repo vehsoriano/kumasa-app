@@ -58,9 +58,20 @@ function Routes() {
     }
   }
 
+  const removeTokenID = async () => {
+    try {
+      await AsyncStorage.removeItem('USER_ID');
+      return true;
+    }
+    catch(exception) {
+      return false;
+    }
+  }
+
   const logout = () => {
     dispatch({type: 'LOG_OUT'})
     removeToken()
+    removeTokenID()
   }  
 
   console.log(auth.isLogged)

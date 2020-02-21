@@ -120,7 +120,9 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 200,
     // marginTop: 50,
-    zIndex: -1,
+    // zIndex: -1,
+    // elevation: 0,
+    // marginTop:-50,
   },
   holdeBannerText: {
     position: 'absolute',

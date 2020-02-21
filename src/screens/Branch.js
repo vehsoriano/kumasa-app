@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../components/Header'
 
 function Branch({route, navigation}) {
@@ -24,6 +25,7 @@ function Branch({route, navigation}) {
   const [loader, setLoader] = useState(true)
   React.useEffect(() => {
     console.log('change route')
+    // setLoader(false) //temp
     setLoader(true)
     getBranchItems()
   }, [Branch_ID])
@@ -40,8 +42,17 @@ function Branch({route, navigation}) {
     })
   }
 
-  const addProductToCart = (product) => {
-    console.log(product)
+  const addProductToCart = (id) => {
+    console.log(id.item._id)
+    setItemList((state) => {
+      // console.log(state)
+      let val = state.find(x => x._id === id.item._id)
+      val.isAdded = !val.isAdded
+      return([
+        ...state
+        ]
+      )
+    })
   }
 
 
@@ -62,7 +73,7 @@ function Branch({route, navigation}) {
   
   return (
     <>    
-      <Header navigationProps={navigation}/>
+      <Header navigationProps={navigation} />
 
       <View style={styles.container}>
           <View style={styles.holderBanner}>
@@ -105,18 +116,37 @@ function Branch({route, navigation}) {
                       <View style={styles.cardHeader}>
                         <View>
                           <Text style={styles.title}>{item.item_name}</Text>
-                          <Text style={styles.price}>{item.price}</Text>
+                          <Text style={styles.price}>Php {item.price}.00</Text>
                         </View>                        
                       </View>
                       <Image style={styles.cardImage} source={{uri:item.logo}}/>
                       <View style={styles.cardFooter}>
                         <View style={styles.socialBarContainer}>
-                          <View style={styles.socialBarSection}>
-                            <TouchableOpacity style={styles.socialBarButton} onPress={() => addProductToCart(post)}>
-                              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png'}}/>
-                              <Text style={[styles.socialBarLabel, styles.buyNow]}>Add To Cart</Text>
-                            </TouchableOpacity>
-                          </View>
+                          
+                          {
+                            !item.isAdded ? (
+                              <View style={styles.socialBarSection}>
+                                <TouchableOpacity style={styles.socialBarButton} onPress={() => addProductToCart(post)}>
+                                  {/* <Image style={styles.icon} source={{uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png'}}/> */}
+                                  <Icon
+                                    name='cart-plus'
+                                    size={20}
+                                    color='#000'
+                                  />
+                                  <Text style={[styles.socialBarLabel, styles.buyNow]}>Add To Cart</Text>
+                                </TouchableOpacity>
+                              </View>
+                            ) : (
+                              <View style={styles.socialBarSection}>
+                                <Icon
+                                  name='check-square'
+                                  size={20}
+                                  color='green'
+                                />
+                                <Text style={[styles.socialBarLabel, styles.buyNow]}>Added</Text>
+                              </View>
+                            )
+                          }                          
                           {/* <View style={styles.socialBarSection}>
                             <TouchableOpacity style={styles.socialBarButton}>
                               <Image style={styles.icon} source={{uri: 'https://png.icons8.com/color/50/000000/hearts.png'}}/>
@@ -135,8 +165,8 @@ function Branch({route, navigation}) {
                             height: viewHeight,
                             width: viewWidth,
                             zIndex: 11,   
-                            alignContent: 'center',
-                            justifyContent: 'center'                    
+                            alignContent: 'flex-end',
+                            justifyContent: 'flex-end'                    
                           }}>
                             <Text style={{
                               color: '#fff',
@@ -169,8 +199,10 @@ export default Branch
 
 const styles = StyleSheet.create({
   container:{
+    position: 'relative',
     flex:1,
-    // marginTop:50,
+    // elevation: 0,
+    // marginTop:-50,
   },
   list: {
     paddingHorizontal: 5,
@@ -193,12 +225,12 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     marginVertical: 8,
     backgroundColor:"white",
-    flexBasis: '47%',
-    marginHorizontal: 5,
+    flexBasis: '45%',
+    marginHorizontal: 12,
   },
   cardHeader: {
-    paddingVertical: 17,
-    paddingHorizontal: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
     borderTopLeftRadius: 1,
     borderTopRightRadius: 1,
     flexDirection: 'row',
@@ -212,28 +244,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop: 12.5,
-    paddingBottom: 25,
+    paddingBottom: 12.5,
     paddingHorizontal: 16,
     borderBottomLeftRadius: 1,
     borderBottomRightRadius: 1,
   },
   cardImage:{
     flex: 1,
-    height: 150,
+    height: 120,
     width: null,
   },
   /******** card components **************/
   title:{
     fontSize:18,
     flex:1,
+    fontWeight: 'bold'
   },
   price:{
-    fontSize:16,
-    color: "green",
-    marginTop: 5
+    fontSize:14,
+    color: "#000",
   },
   buyNow:{
-    color: "purple",
+    marginLeft: 5,
+    color: "#000",
   },
   icon: {
     width:25,
@@ -250,6 +283,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     flex: 1,
+    // backgroundColor: 'red'
   },
   socialBarlabel: {
     marginLeft: 8,

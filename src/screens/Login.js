@@ -47,6 +47,15 @@ function Login({navigation}) {
     }
   }
 
+  const storeDataID = async (value) => {
+    try {
+      await AsyncStorage.setItem('USER_ID', value) 
+    } catch (e) {
+      // saving error
+    }
+  }
+  
+
   const forgotPassword = () => {
     alert('forgot password')
   }
@@ -65,7 +74,9 @@ function Login({navigation}) {
       
       axios.post('https://kumasa-admin.herokuapp.com/api/auth', req)
       .then(res => {
+        console.log(res.data)
           storeData(res.data.token)
+          storeDataID(res.data.user)
           setLoader(false)
           dispatch({type: 'LOG_IN'})
           if(auth.isLogged) {     
