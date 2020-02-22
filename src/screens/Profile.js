@@ -15,10 +15,6 @@ function Profile() {
             <View style={styles.headerContent}>
                 <Image style={styles.avatar}
                   source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
-
-                <Text style={styles.name}>
-                  John Doe
-                </Text>
             </View>
           </View>
       </View>

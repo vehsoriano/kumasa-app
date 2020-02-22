@@ -32,6 +32,7 @@ import OrderHistory from './src/screens/OrderHistory'
 import Branch from './src/screens/Branch'
 import Cart from './src/screens/Cart'
 import Settings from './src/screens/Settings'
+import Payment from './src/screens/Payment'
 
 
 const Stack = createStackNavigator();
@@ -91,7 +92,8 @@ function Routes() {
               <Stack.Screen name="OrderHistory" component={OrderHistory} />
               <Stack.Screen name="Cart" component={Cart} />
               <Stack.Screen name="Branch"  component={Branch} options={{headerShown: false}}/>  
-              <Stack.Screen name="Settings"  component={Settings} />      
+              <Stack.Screen name="Settings"  component={Settings} /> 
+              <Stack.Screen name="Payment"  component={Payment} />     
             </Stack.Navigator>
           )         
         )

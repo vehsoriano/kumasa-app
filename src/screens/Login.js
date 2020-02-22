@@ -14,7 +14,6 @@ import { connect, useSelector, useDispatch} from 'react-redux'
 import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage';
 let ScreenHeight = Dimensions.get("window").height;
@@ -49,13 +48,22 @@ function Login({navigation}) {
     }
   }
 
-  const storeDataID = async (value) => {
+  const StoreUserData = async (value) => {
     try {
-      await AsyncStorage.setItem('USER_ID', value) 
+      var jsonofItem = await AsyncStorage.setItem('USER_DATA',JSON.stringify(value)) 
+      return jsonofItem
     } catch (e) {
       // saving error
     }
   }
+
+  // const storeUserData = async (value) => {
+  //   try {
+  //     await AsyncStorage.setItem('USER_DATA', value) 
+  //   } catch (e) {
+  //     // saving error
+  //   }
+  // }
   
 
   const forgotPassword = () => {
@@ -79,7 +87,7 @@ function Login({navigation}) {
         console.log(res.data)
           storeData(res.data.token)
           Keyboard.dismiss()
-          storeDataID(res.data.user)
+          StoreUserData(res.data.user)
           setLoader(false)
           dispatch(allActions.authActions.login())
           if(auth) {     
