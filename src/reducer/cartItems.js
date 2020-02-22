@@ -21,7 +21,9 @@ const cartItems = (state = [], action) => {
     case 'DECREASE_ITEM_QUANTITY':
       const decState = [...state]
       let decVal = decState.find(x =>x._id === action.payload)
-      decVal.initialQuantity--
+      if(decVal.initialQuantity > 1) {
+        decVal.initialQuantity--
+      }
       return decState
     case 'REMOVE_ALL_ITEM_TO_CART':
       return state = []
@@ -31,3 +33,4 @@ const cartItems = (state = [], action) => {
 }
 
 export default cartItems
+
