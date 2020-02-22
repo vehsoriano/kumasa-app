@@ -170,8 +170,8 @@ function Login({navigation}) {
             secureTextEntry={true}
             rightIcon={
               <Icon
-                name='envelope'
-                size={16}
+                name='lock'
+                size={24}
                 color='#FCD69D'
               />
             }
@@ -226,15 +226,17 @@ const styles = StyleSheet.create({
     left: 0,
     flex:1,
     zIndex: 2,
-    backgroundColor: 'white',
+    backgroundColor: '#F8E8D5',
     alignContent: 'center',
     justifyContent: 'center',
     width: ScreenWidth,
     height: ScreenHeight,
   },
   loaderAvatar: {
-    width: ScreenWidth,
-    height: 70,
+    width: ScreenWidth - 50,
+    height: 85,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
 
   name:{

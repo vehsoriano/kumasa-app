@@ -96,7 +96,8 @@ function Home({ navigation }) {
                 <Image style={styles.image} source={{uri: item.logo}}/>
                 <View style={styles.cardContent}>
                   <Text style={styles.name}>{item.name}</Text>
-                  <Text style={styles.count}>{item.count}</Text>
+                  <Text style={styles.count}>{item.address}</Text>
+                  {/* <Text style={styles.count}>{item.count}</Text> */}
                   <TouchableOpacity style={styles.followButton} 
                   onPress={()=> goToChild(item)}>
                     <Text style={styles.followButtonText}>Explore now</Text>  
@@ -182,7 +183,8 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     marginLeft:20,
-    marginTop:10
+    // marginTop:10,
+    // backgroundColor: 'red'
   },
   image:{
     width:90,
