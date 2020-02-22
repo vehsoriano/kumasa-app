@@ -24,15 +24,15 @@ import allActions from '../actions'
 import { useSelector, useDispatch } from 'react-redux'
 
 function Branch({route, navigation}) {
+  const { BranchDetailsName, BranchDetailsImage, Branch_ID } = route.params;
 
 
   // Redux
   const cartItems = useSelector(state => state.cartItems);
   const dispatch = useDispatch()
 
-  const { BranchDetailsName, BranchDetailsImage, Branch_ID } = route.params;
   const [itemList, setItemList] = useState()
-  const [searchItemList, setSearchItemList] = useState()
+  // const [searchItemList, setSearchItemList] = useState()
   const [loader, setLoader] = useState(true)
 
   React.useEffect(() => {
@@ -73,6 +73,8 @@ function Branch({route, navigation}) {
     //   )
     // })
   }
+
+  console.log(itemList)
 
   // console.log('------------------------')
   console.log(cartItems)

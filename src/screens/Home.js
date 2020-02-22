@@ -12,7 +12,8 @@ import {
   TextInput,
   ImageBackground 
 } from 'react-native';
-import Header from '../components/Header'
+// import Header from '../components/Header'
+import HeaderSettings from '../components/HeaderSettings'
 import { ScrollView } from 'react-native-gesture-handler';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
@@ -60,7 +61,7 @@ function Home({ navigation }) {
 
   return (
     <>
-      <Header navigationProps={navigation} />
+      <HeaderSettings navigationProps={navigation} />
       
       <View style={styles.holderBanner}>
         <ImageBackground  
@@ -156,6 +157,8 @@ const styles = StyleSheet.create({
     height:45,
     marginTop: -65,    
     margin:20,
+    zIndex: 1,
+    elevation: 2,
   },
   icon:{
     width:30,

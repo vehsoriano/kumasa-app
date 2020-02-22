@@ -12,12 +12,16 @@ import {
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { 
-  createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
+// import { 
+//   createDrawerNavigator,
+//   DrawerContentScrollView,
+//   DrawerItemList,
+//   DrawerItem,
+// } from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-community/async-storage';
+
+let ScreenHeight = Dimensions.get("window").height;
+let ScreenWidth = Dimensions.get("window").width;
 
 import Home from './src/screens/Home'
 import Details from './src/screens/Details'
@@ -27,17 +31,14 @@ import Profile from './src/screens/Profile'
 import OrderHistory from './src/screens/OrderHistory'
 import Branch from './src/screens/Branch'
 import Cart from './src/screens/Cart'
-import AsyncStorage from '@react-native-community/async-storage';
+import Settings from './src/screens/Settings'
 
-let ScreenHeight = Dimensions.get("window").height;
-let ScreenWidth = Dimensions.get("window").width;
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
-import { connect, useSelector, useDispatch} from 'react-redux'
+// const Drawer = createDrawerNavigator();
+import { useSelector, useDispatch} from 'react-redux'
 import allActions from './src/actions'
 
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function Routes() { 
   const auth = useSelector(state => state.auth);
@@ -66,58 +67,8 @@ function Routes() {
     }
   }
 
-  const removeToken = async () => {
-    try {
-      await AsyncStorage.removeItem('TOKEN');
-      return true;
-    }
-    catch(exception) {
-      return false;
-    }
-  }
-
-  const removeTokenID = async () => {
-    try {
-      await AsyncStorage.removeItem('USER_ID');
-      return true;
-    }
-    catch(exception) {
-      return false;
-    }
-  }
-
-  const logout = () => {
-    // dispatch({type: 'LOG_OUT'})
-    dispatch(allActions.authActions.logout())
-    removeToken()
-    removeTokenID()
-  }  
-
-  console.log('---------')
+  console.log('Routes---------')
   console.log(auth)
-
-
-  function CustomDrawerContent(props) {
-    return (
-      <DrawerContentScrollView {...props}>
-        <View>
-          <Text>
-            asdasdasdasd
-          </Text>
-        </View>
-        <DrawerItemList {...props} />
-        {/* <DrawerItem label="Signout" onPress={() => logout()} /> */}
-        <View>
-          <TouchableOpacity onPress={() => logout()}>
-            <Text>
-              Signout
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </DrawerContentScrollView>
-    );
-  }
-  // auth.isLogged
 
   return (
     <NavigationContainer>
@@ -133,29 +84,15 @@ function Routes() {
               <Stack.Screen name="Signup" component={Signup} />
             </Stack.Navigator>             
           ) : (
-            <Drawer.Navigator 
-              initialRouteName="Home"
-              drawerContent={props => CustomDrawerContent(props)}
-            >
-              <Drawer.Screen name="Home" component={Home} />
-              <Drawer.Screen name="Details" component={Details} />
-              {/* <Drawer.Screen name="Profile" component={Profile} /> */}
-              <Drawer.Screen name="OrderHistory" component={OrderHistory} />
-              <Drawer.Screen 
-                name="Cart" 
-                component={Cart}                 
-                options={{ 
-                  drawerLabel: () => null 
-                }}      
-              />
-              <Drawer.Screen 
-                name="Branch" 
-                component={Branch}                 
-                options={{ 
-                  drawerLabel: () => null ,
-                }}      
-              />       
-            </Drawer.Navigator>
+            <Stack.Navigator initialRouteName="Home" >
+              <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
+              <Stack.Screen name="Details" component={Details} />
+              <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen name="OrderHistory" component={OrderHistory} />
+              <Stack.Screen name="Cart" component={Cart} />
+              <Stack.Screen name="Branch"  component={Branch} options={{headerShown: false}}/>  
+              <Stack.Screen name="Settings"  component={Settings} />      
+            </Stack.Navigator>
           )         
         )
       }          
