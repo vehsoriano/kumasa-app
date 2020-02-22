@@ -6,7 +6,8 @@ import {
   // TextInput, 
   TouchableOpacity,
   StyleSheet,
-  Dimensions 
+  Dimensions,
+  Keyboard 
 } from 'react-native';
 import forms from '../styles/forms'
 import { connect, useSelector, useDispatch} from 'react-redux'
@@ -18,12 +19,13 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
+import allActions from '../actions'
 
 function Login({navigation}) {
 
 
   // const counter = useSelector(state => state.first);
-  const auth = useSelector(state => state.authenticate);
+  const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const [loader, setLoader] = useState(false)
 
@@ -76,10 +78,11 @@ function Login({navigation}) {
       .then(res => {
         console.log(res.data)
           storeData(res.data.token)
+          Keyboard.dismiss()
           storeDataID(res.data.user)
           setLoader(false)
-          dispatch({type: 'LOG_IN'})
-          if(auth.isLogged) {     
+          dispatch(allActions.authActions.login())
+          if(auth) {     
             navigation.navigate('Home')     
           } 
         })
@@ -122,10 +125,13 @@ function Login({navigation}) {
     <>
     {
       loader ? (
-        <View style={styles.overlayContent}>
-          <Text
-            style={styles.overlayText}
-          >Loading...</Text>
+        // <View style={styles.overlayContent}>
+        //   <Text
+        //     style={styles.overlayText}
+        //   >Loading...</Text>
+        // </View>
+        <View style={styles.loaderHolder}>
+          <Image style={styles.loaderAvatar} source={{uri:'https://i.imgur.com/jaT8Frm.png'}}/>
         </View>
       ) : (
         null
@@ -212,6 +218,25 @@ export default Login
 
 
 const styles = StyleSheet.create({
+
+
+  loaderHolder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    flex:1,
+    zIndex: 2,
+    backgroundColor: 'white',
+    alignContent: 'center',
+    justifyContent: 'center',
+    width: ScreenWidth,
+    height: ScreenHeight,
+  },
+  loaderAvatar: {
+    width: ScreenWidth,
+    height: 70,
+  },
+
   name:{
     fontSize:22,
     color:"#ff9501",
@@ -235,20 +260,20 @@ const styles = StyleSheet.create({
   },
 
 
-  overlayContent: {
-    position: 'absolute',
-    // width: '100vw',
-    // height: '100vh',
-    zIndex: 5,
-    width: ScreenWidth,
-    height: ScreenHeight,
-    backgroundColor: 'rgba(0,0,0,0.5)'
-  },
+  // overlayContent: {
+  //   position: 'absolute',
+  //   // width: '100vw',
+  //   // height: '100vh',
+  //   zIndex: 5,
+  //   width: ScreenWidth,
+  //   height: ScreenHeight,
+  //   backgroundColor: 'rgba(0,0,0,0.5)'
+  // },
   
-  overlayText: {    
-    marginTop: '50%',
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 24,
-  }
+  // overlayText: {    
+  //   marginTop: '50%',
+  //   color: '#fff',
+  //   textAlign: 'center',
+  //   fontSize: 24,
+  // }
 })

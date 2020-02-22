@@ -2,18 +2,15 @@
 
 import * as React from 'react';
 import Routes from './Routes'
+import { ThemeProvider } from 'react-native-elements';
 
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
-import vehicle from './src/reducer/cart'
-import auth from './src/reducer/login'
-import { ThemeProvider } from 'react-native-elements';
+// import vehicle from './src/reducer/cart'
+// import auth from './src/reducer/auth'
+// import cartItems from './src/reducer/cartItems'
 
-
-const rootReducer = combineReducers({
-  first: vehicle,
-  authenticate: auth
-})
+import rootReducer from './src/reducer'
 
 const store = createStore(rootReducer)
 

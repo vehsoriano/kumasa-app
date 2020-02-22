@@ -16,13 +16,25 @@ let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../components/Header'
+import allActions from '../actions'
+
+
+// Redux
+
+import { useSelector, useDispatch } from 'react-redux'
 
 function Branch({route, navigation}) {
+
+
+  // Redux
+  const cartItems = useSelector(state => state.cartItems);
+  const dispatch = useDispatch()
 
   const { BranchDetailsName, BranchDetailsImage, Branch_ID } = route.params;
   const [itemList, setItemList] = useState()
   const [searchItemList, setSearchItemList] = useState()
   const [loader, setLoader] = useState(true)
+
   React.useEffect(() => {
     console.log('change route')
     // setLoader(false) //temp
@@ -42,18 +54,28 @@ function Branch({route, navigation}) {
     })
   }
 
-  const addProductToCart = (id) => {
-    console.log(id.item._id)
-    setItemList((state) => {
-      // console.log(state)
-      let val = state.find(x => x._id === id.item._id)
-      val.isAdded = !val.isAdded
-      return([
-        ...state
-        ]
-      )
-    })
+  const addProductToCart = (item) => {
+    // console.log(item.item._id)
+    
+    console.log('------------------------')
+    console.log(item.item)
+
+    // const cart = {item.item}
+
+    dispatch(allActions.cartActions.addToCart(item.item))
+    // setItemList((state) => {
+    //   // console.log(state)
+    //   let val = state.find(x => x._id === id.item._id)
+    //   val.isAdded = !val.isAdded
+    //   return([
+    //     ...state
+    //     ]
+    //   )
+    // })
   }
+
+  // console.log('------------------------')
+  console.log(cartItems)
 
 
   const [viewWidth, setViewWidth] = useState(0)
@@ -74,7 +96,6 @@ function Branch({route, navigation}) {
   return (
     <>    
       <Header navigationProps={navigation} />
-
       <View style={styles.container}>
           <View style={styles.holderBanner}>
             {
@@ -122,7 +143,7 @@ function Branch({route, navigation}) {
                       <Image style={styles.cardImage} source={{uri:item.logo}}/>
                       <View style={styles.cardFooter}>
                         <View style={styles.socialBarContainer}>
-                          
+                        {/* addProductToCart(post)} */}
                           {
                             !item.isAdded ? (
                               <View style={styles.socialBarSection}>
@@ -190,8 +211,6 @@ function Branch({route, navigation}) {
     </>
   )
 }
-
-
 
 
 export default Branch

@@ -11,36 +11,43 @@ import {
   FlatList,
   Animated
 } from 'react-native';
-import axios from 'axios'
-import AsyncStorage from '@react-native-community/async-storage';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SwipeListView } from 'react-native-swipe-list-view';
+
 let screenWidth = Dimensions.get('window').width;
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import axios from 'axios'
+import AsyncStorage from '@react-native-community/async-storage';
+import { useSelector, useDispatch } from 'react-redux'
+import allActions from '../actions'
+
 function Cart({navigation}) {
 
-  
-  const [cart, setCart] = useState([])
+  const cart = useSelector(state => state.cartItems);
+
+  // const [cart, setCart] = useState([])
   const [total, setTotal] = useState(0)
   const [userID, setUserID] = useState('')
+  
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    getBranchItems()
-  }, [])
+  // useEffect(() => {
+  //   getBranchItems()
+  // }, [])
 
-  function getBranchItems() {
-    axios.get(`https://kumasa-admin.herokuapp.com/api/item/branch/5e48f7bb2308b03418f57c5b`)
-    .then(res => {
-      setCart(res.data)
-      // console.log(res.data)
-      // setSearchItemList(res.data)
-      // setLoader(false)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+  // function getBranchItems() {
+  //   axios.get(`https://kumasa-admin.herokuapp.com/api/item/branch/5e48f7bb2308b03418f57c5b`)
+  //   .then(res => {
+  //     setCart(res.data)
+  //     // console.log(res.data)
+  //     // setSearchItemList(res.data)
+  //     // setLoader(false)
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
+  // }
 
   function addTemp() {
     // const b= {
@@ -54,7 +61,21 @@ function Cart({navigation}) {
     //   updated_at: "2020-02-15T14:54:00.799Z"
     // }
 
-    // setCalls([...calls, b])
+    const b = {
+      __v: 0, 
+      _id: "5e48e86d2308b03418f57c5a", 
+      created_at: "2020-02-16T06:59:57.557Z", 
+      initialQuantity: "1", 
+      isAdded: false, 
+      item_branch_id: "5e44438dc55f194b607d4b9b", 
+      item_name: "Fun shots", 
+      logo: "https://i.imgur.com/okm7dcX.png", 
+      price: "50", 
+      status: "Available", 
+      updated_at: "2020-02-16T06:59:57.557Z"
+    }
+
+    setCart([...cart, b])
   }
 
   useEffect(() => {
@@ -64,6 +85,7 @@ function Cart({navigation}) {
   function getTotal() {
     if(Object.keys(cart).length === 0) {
       console.log('no data')
+      setTotal(0)
     } 
     
     // else if(Object.keys(calls).length === 1) {
@@ -85,27 +107,29 @@ function Cart({navigation}) {
   }  
 
   function increaseQty(id) {
+    dispatch(allActions.cartActions.increaseQTY(id))
     // console.log('increase + 1')
-    setCart((state) => {
-      // console.log(state)
-      let val = state.find(x => x._id === id)
-      val.initialQuantity++
-      return([
-        ...state
-        ]
-      )
-    })
+    // setCart((state) => {
+    //   // console.log(state)
+    //   let val = state.find(x => x._id === id)
+    //   val.initialQuantity++
+    //   return([
+    //     ...state
+    //     ]
+    //   )
+    // })
   }
 
   function decreaseQty(id) {
+    dispatch(allActions.cartActions.decreaseQTY(id))
     // console.log('decrease - 1')
-    setCart((state) => {
-      let delVal = state.find(x => x._id === id)
-      delVal.initialQuantity--
-      return([
-        ...state
-      ])
-    })
+    // setCart((state) => {
+    //   let delVal = state.find(x => x._id === id)
+    //   delVal.initialQuantity--
+    //   return([
+    //     ...state
+    //   ])
+    // })
   }
 
   async function getToken(){
@@ -125,7 +149,8 @@ function Cart({navigation}) {
     getToken()
   }, [])
 
-
+  // console.log('-------------------------------')
+  // console.log(total)
   // console.log(cart)
 
   function checkoutOrder() {
@@ -142,6 +167,8 @@ function Cart({navigation}) {
       axios.post(`https://kumasa-admin.herokuapp.com/api/order/${userID}`, req)
       .then(res => {
         console.log(res)
+        alert('success')
+        dispatch(allActions.cartActions.$REMOVE_ALL())
       })
       .catch(err => {
         console.log(err)
@@ -151,6 +178,12 @@ function Cart({navigation}) {
 
   function cancelCheckout() {
     navigation.goBack()
+  }
+
+  function deleteCartItem(data) {
+    console.log('==================================')
+    console.log(data.index)
+    dispatch(allActions.cartActions.removeToCart(data.index))
   }
 
   return (
@@ -211,7 +244,7 @@ function Cart({navigation}) {
           renderHiddenItem={ (data, rowMap) => (
             <TouchableOpacity 
             style={[styles.backRightBtn, styles.backRightBtnRight]}
-            onPress={() => console.log(data)}
+            onPress={() => deleteCartItem(data)}
             >
               <View 
                 style={styles.backTextWhite}>
@@ -228,9 +261,9 @@ function Cart({navigation}) {
         <View style={styles.bottomTotalHolder}>
           <Text style={styles.totalText}>Total: Php{total}</Text>
         </View> 
-        <TouchableOpacity onPress={() => addTemp()}>
+        {/* <TouchableOpacity onPress={() => addTemp()}>
             <Text>Add Temp Item</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView> 
        
       <View style={styles.checkoutHolder}>

@@ -10,7 +10,12 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 var width = Dimensions.get('window').width; //full width
 
+import { connect, useSelector, useDispatch} from 'react-redux'
+
+
 function Header({navigationProps}) {
+  const cartItems = useSelector(state => state.cartItems);
+  const dispatch = useDispatch();
 
   console.log('header component')
 
@@ -38,6 +43,25 @@ function Header({navigationProps}) {
           onPress={() => navigationProps.navigate('Cart')}
           style={style.headerIcon}
         >
+          <View style={{
+            position: 'absolute',
+            height: 27.5,
+            width: 27.5,
+            borderRadius: 15,
+            backgroundColor: 'rgba(95,197,123,.5)',
+            right: 12,
+            bottom: 5,
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1
+          }}>
+            <Text
+              style={{color: 'white',
+              fontWeight: 'bold'
+            }}>
+              {cartItems.length}
+            </Text>
+          </View>
           <Icon
             name='shopping-cart'
             size={28}
