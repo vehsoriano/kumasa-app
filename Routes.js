@@ -63,6 +63,7 @@ function Routes() {
         console.log(value)
       } else {
         console.log('null')
+        setVisualLoader(false)
       }
     } catch(e) {
       // error reading value

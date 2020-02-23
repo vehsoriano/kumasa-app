@@ -26,6 +26,7 @@ function Signup({navigation}) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loader, setLoader] = useState(false)
+  const [address, setAddress] = useState('')
 
   const {
     container,
@@ -51,9 +52,9 @@ function Signup({navigation}) {
       last_name,
       phone_number,
       email,
-      address: '',
-      city: '',
-      province: '',
+      address,
+      city: 'Angeles City',
+      province: 'Pampanga',
       role: 'customer',
       password
     }
@@ -68,6 +69,8 @@ function Signup({navigation}) {
     })
     .catch(err => {
       console.log(err)
+      console.log(err.response.data.errors[0].msg)
+      Toast.show(err.response.data.errors[0].msg);
     })
   }
 
@@ -168,6 +171,25 @@ function Signup({navigation}) {
               value={phone_number}
             />
           </View>
+
+          <View style={formGroup}>            
+            <Input
+              label="Complete Address (Exlude City)"
+              placeholder='#15-8 San Lazaro St. Marisol'
+              labelStyle={labelStyle}
+              inputContainerStyle={formInput}
+              rightIcon={
+                <Icon
+                  name='location-arrow'
+                  size={20}
+                  color='#FCD69D'
+                />
+              }
+              onChangeText={(address) => setAddress(address)}
+              value={address}
+            />
+          </View>
+
           <View style={formGroup}>            
             <Input
               label="Password"

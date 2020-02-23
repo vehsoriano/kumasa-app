@@ -81,24 +81,38 @@ function Login({navigation}) {
         email,
         password
       }
+
+      console.log(req)
       
-      axios.post('https://kumasa-admin.herokuapp.com/api/auth', req)
-      .then(res => {
-        console.log(res.data)
-          storeData(res.data.token)
-          Keyboard.dismiss()
-          StoreUserData(res.data.user)
-          setLoader(false)
-          dispatch(allActions.authActions.login())
-          if(auth) {     
-            navigation.navigate('Home')     
-          } 
-        })
-        .catch(err => {
-          setLoader(false)
-          console.log(err.response.data.errors[0].msg)
-          Toast.show(err.response.data.errors[0].msg);
-        })
+      if (email === '' && password === '') {
+        setLoader(false)
+        Toast.show('Please fill up the fields');
+      } else {
+        axios.post('https://kumasa-admin.herokuapp.com/api/auth', req)
+          .then(res => {
+            console.log('enter')
+            console.log(res.data)
+            Toast.show(res.data.data.msg);
+            if(res.data.data.status === "success") {
+              storeData(res.data.token)
+              StoreUserData(res.data.user)
+              setLoader(false)
+              dispatch(allActions.authActions.login())
+              if(auth) {     
+                navigation.navigate('Home')     
+              }
+            } else {
+              console.log('enter failed')   
+              setLoader(false)       
+            }
+          })
+          .catch(err => {
+            setLoader(false)
+            console.log('not enter')
+            console.log(err.response.data.errors[0].msg)
+            Toast.show(err.response.data.errors[0].msg);
+          })
+      }
 
       // if(auth.isLogged) {
       //   navigation.navigate('Home')

@@ -5,6 +5,7 @@ import {
   StyleSheet, 
   Image,
   Dimensions, 
+  Picker,
 } from 'react-native';
 import forms from '../styles/forms'
 import { useSelector, useDispatch} from 'react-redux'
@@ -26,6 +27,7 @@ function Payment({navigation}) {
   const [address, setAddress] = useState('')
   const [landmark, setLandmark] = useState('')
   const [userData, setUserData] = useState('')
+  const [type, setType] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -127,6 +129,17 @@ function Payment({navigation}) {
       <CustomCart />
       <View style={style.separator}></View>
       <Text style={style.title}>Payment Method</Text>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
+        <Picker
+          selectedValue={type}
+          style={{height: 50, width: ScreenWidth}}
+          onValueChange={(itemValue, itemIndex) =>
+            setType(itemValue)
+          }>
+          <Picker.Item label="Cash On Delivery" value="cod" />
+          <Picker.Item label="Online Payment" value="online" />
+        </Picker>
+      </View>
       <Text style={style.warn}>
         Note: Please review your delivery address and order. Once you click "Make Payment"
         you can no longer cancel your order
@@ -142,6 +155,9 @@ function Payment({navigation}) {
         }
         title="Make payment"
       />
+      <Text
+        style={{fontSize: 12, textAlign: 'center', marginTop: 10, marginBottom: 25}}
+      >By clicking MAKE PAYMENT, You Agree with our Terms and Conditions</Text>
     </ScrollView>
   )
 }

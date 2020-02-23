@@ -49,6 +49,15 @@ function Settings({navigation}) {
     ]
   )
 
+  function clickEventListener(route) {
+    if(route === "logout") {
+      logout()
+      console.log('logout me!')
+    } else {
+      navigation.navigate(route)
+    }
+  }
+
   const removeToken = async () => {
     try {
       await AsyncStorage.removeItem('TOKEN');
@@ -71,17 +80,14 @@ function Settings({navigation}) {
 
   const logout = () => {
     // dispatch({type: 'LOG_OUT'})
-    dispatch(allActions.authActions.logout())
     removeToken()
     removeTokenID()
-  }  
-
-  function clickEventListener(route) {
-    if(route === "logout") {
-      logout()
-    } else {
-      navigation.navigate(route)
-    }
+    clearAsyncStorage()
+    dispatch(allActions.authActions.logout())
+  } 
+  
+  const clearAsyncStorage = async() => {
+    AsyncStorage.clear();
   }
 
   return (
