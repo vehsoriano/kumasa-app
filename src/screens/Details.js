@@ -19,21 +19,46 @@ import axios from 'axios'
 // import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 function Details({ route, navigation }) {
-
-
   const { branchParams, itemParams } = route.params
+  const [total, setTotal] = useState(0)  
 
-  console.log(itemParams)
+  useEffect(() => {
+    getTotal()
+  }, [itemParams])
 
-  console.log(branchParams)
-
+  function getTotal() {
+    if(Object.keys(itemParams).length === 0) {
+      console.log('no data')
+      setTotal(0)
+    } 
+    
+    // else if(Object.keys(calls).length === 1) {
+    //   // console.log('has one data') 
+    //   var singleTotal = calls[0].initialQuantity * calls[0].price 
+    //   setTotal(singleTotal)
+    // } 
+    
+    else {
+      // console.log('has many data')
+      let sum = function(items, prop, qua){
+        return items.reduce( function(a, b){
+          return a + (b[prop] * b[qua]);
+        }, 0);
+      }
+      const total = sum(itemParams, 'price', 'qty')
+      setTotal(total)
+    }
+  } 
 
   return (
     <>
       <View style={styles.banner}>
         <Image style={styles.branchLogo} source={{uri: branchParams.branch_logo}}/>
-          <Text>
+          <Text style={styles.branchName}>
             {branchParams.order_branch}
+          </Text>
+          <Text style={styles.branchAddress}>
+            {branchParams.order_address}
           </Text>
       </View>
       <View style={styles.viewHolder}>
@@ -74,14 +99,19 @@ function Details({ route, navigation }) {
                 <Text style={[styles.itemFlex]}>{item.price}</Text>
                 <Text style={[styles.itemFlex, styles.itemCenter]}>{item.qty}</Text>
                 <Text style={[styles.itemFlex]}>Php {item.total}</Text>
-              </View> 
-              {/* <View style={styles.orderItems}>
-                <Text style={[styles.itemFlex]}>Php {item.total}</Text>
-              </View> */}
+              </View>               
             </>
           )
-        })}
-        
+        })}              
+      </View>
+      <View style={[styles.viewHolder, {paddingBottom: 25}]}>
+        <View style={styles.orderItems}>
+          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total}</Text>
+        </View> 
       </View>
     </>
   );
@@ -110,6 +140,16 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
   },
+  branchName: {
+    color: '#fff',
+    marginTop: 8,
+    fontSize: 20,
+    fontWeight: 'bold'
+  },
+  branchAddress: {
+    color: '#fff',
+    fontSize: 16,
+  },
   branchLogo: {
     width: 75,
     height: 75,
@@ -120,7 +160,8 @@ const styles = StyleSheet.create({
   },
   viewHolder: {
     backgroundColor: '#fff',
-    padding: 25,
+    paddingTop: 25,
+    paddingHorizontal: 25,
   },
   orderDetails: {
     display: 'flex',
