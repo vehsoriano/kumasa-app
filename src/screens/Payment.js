@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {  
   View, 
   Text, 
@@ -7,8 +7,8 @@ import {
   Dimensions, 
 } from 'react-native';
 import forms from '../styles/forms'
-import { connect, useSelector, useDispatch} from 'react-redux'
-import Toast from 'react-native-simple-toast';
+import { useSelector, useDispatch} from 'react-redux'
+// import Toast from 'react-native-simple-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios'
@@ -19,11 +19,20 @@ let ScreenWidth = Dimensions.get("window").width;
 import allActions from '../actions'
 import CustomCart from '../components/Cart'
 
-function Payment() {
+function Payment({navigation}) {
 
+  const cart = useSelector(state => state.cartItems);
 
   const [address, setAddress] = useState('')
   const [landmark, setLandmark] = useState('')
+  const [userData, setUserData] = useState('')
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    getToken()
+  }, [])
+
+  // const [itemOnPayment, setItemOnPayment] = useState({})
 
   const {
     container,
@@ -31,6 +40,48 @@ function Payment() {
     labelStyle,
     formGroup,
   } = forms
+
+
+  async function getToken(){
+    try {
+      const value = await AsyncStorage.getItem('USER_DATA')
+      if(value !== null) {
+        setUserData(JSON.parse(value))
+        // console.log(JSON.parse(value)._id)
+      } else {
+        // console.log('null')
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  const makePayment = () => {
+    const arr = []
+    console.log('make payment')
+    cart.map((item, i) => {     
+      arr.push({
+        order_item_id: item._id,
+        qty: item.initialQuantity
+      })
+    })
+
+    const req = {
+      items: arr 
+    }
+
+    axios.post(`https://kumasa-admin.herokuapp.com/api/order/${userData._id}`, req)
+      .then(res => {
+        console.log(res)
+        dispatch(allActions.cartActions.$REMOVE_ALL())
+        navigation.navigate('Accepted', {
+          userData_id: userData.first_name
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
 
   return (
     <ScrollView>
@@ -81,7 +132,7 @@ function Payment() {
         you can no longer cancel your order
       </Text>
       <Button
-        onPress={() => console.log('pay')}
+        onPress={() => makePayment()}
         icon={
           <Icon
             name="credit-card"

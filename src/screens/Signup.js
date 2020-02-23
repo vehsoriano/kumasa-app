@@ -104,6 +104,7 @@ function Signup({navigation}) {
               placeholder='John'
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
+              required
               rightIcon={
                 <Icon
                   name='user'

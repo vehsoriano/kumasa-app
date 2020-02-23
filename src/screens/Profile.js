@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect }from 'react'
 import { 
   View, 
   Text,
@@ -7,17 +7,39 @@ import {
   TouchableOpacity,
   StyleSheet 
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 function Profile() {
+  const [userData, setUserData] = useState('')
+
+  useEffect(() => {
+    getToken()
+  }, [])
+
+  async function getToken(){
+    try {
+      const value = await AsyncStorage.getItem('USER_DATA')
+      if(value !== null) {
+        setUserData(JSON.parse(value))
+        // console.log(JSON.parse(value)._id)
+      } else {
+        // console.log('null')
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
   return (
     <View style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.headerContent}>
-                <Image style={styles.avatar}
-                  source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
-            </View>
+        <View style={styles.header}>
+          <View style={styles.headerContent}>
+              <Image style={styles.avatar}
+                source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
+                <Text>{userData.first_name}</Text>
           </View>
-      </View>
+        </View>
+    </View>
   )
 }
 
