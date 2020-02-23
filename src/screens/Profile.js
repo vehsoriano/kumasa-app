@@ -30,15 +30,39 @@ function Profile() {
     }
   }
 
+  console.log(userData)
+
   return (
+    // <View style={styles.container}>
+    //     <View style={styles.header}>
+    //       <View style={styles.headerContent}>
+    //           <Image style={styles.avatar}
+    //             source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
+    //             <Text>{userData.first_name}</Text>
+    //       </View>
+    //     </View>
+    // </View>
     <View style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.headerContent}>
-              <Image style={styles.avatar}
-                source={{uri: 'https://bootdey.com/img/Content/avatar/avatar1.png'}}/>
-                <Text>{userData.first_name}</Text>
+        <View style={styles.header}></View>
+        <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+        <View style={styles.body}>
+          <View style={styles.bodyContent}>
+            <Text style={styles.name}>{userData.first_name} {userData.last_name}</Text>
+            {/* <Text style={styles.info}>{userData.email}</Text> */}
           </View>
-        </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTittle}>Email:</Text>     
+            <Text style={styles.description}>{userData.email}</Text>
+          </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTittle}>Phone Number:</Text>     
+            <Text style={styles.description}>{userData.phone_number}</Text>
+          </View>
+          <View style={styles.card}>
+            <Text style={styles.cardTittle}>Complete Address:</Text>     
+            <Text style={styles.description}>{userData.address}, {userData.city}</Text>
+          </View>
+      </View>
     </View>
   )
 }
@@ -49,10 +73,7 @@ export default Profile
 const styles = StyleSheet.create({
   header:{
     backgroundColor: "#00BFFF",
-  },
-  headerContent:{
-    padding:30,
-    alignItems: 'center',
+    height:200,
   },
   avatar: {
     width: 130,
@@ -61,21 +82,58 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: "white",
     marginBottom:10,
+    alignSelf:'center',
+    position: 'absolute',
+    marginTop:130
+  },
+  card:{
+    backgroundColor: "#FFFFFF",
+    borderRadius:10,
+    padding:10,
+    height:100,
+    marginTop:10,
+    marginHorizontal: 15,
   },
   name:{
     fontSize:22,
     color:"#FFFFFF",
     fontWeight:'600',
+    marginBottom: 15,
   },
-
+  body:{
+    marginTop:40,
+  },
   bodyContent: {
     flex: 1,
     alignItems: 'center',
     padding:30,
+    marginBottom: 15,
   },
-  textInfo:{
-    fontSize:18,
-    marginTop:20,
+  name:{
+    fontSize:28,
     color: "#696969",
+    fontWeight: "600"
+  },
+  info:{
+    fontSize:16,
+    color: "#00BFFF",
+    marginTop:10
+  },
+  description:{
+    fontSize:16,
+    color: "#696969",
+    marginTop:10,
+    textAlign: 'center'
+  },
+  buttonContainer: {
+    marginTop:10,
+    height:45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:20,
+    width:250,
+    borderRadius:30,
+    backgroundColor: "#00BFFF",
   },
 });

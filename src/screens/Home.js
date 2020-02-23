@@ -10,13 +10,17 @@ import {
   Dimensions,
   SafeAreaView,
   TextInput,
-  ImageBackground 
+  ImageBackground,
+  Alert 
 } from 'react-native';
 // import Header from '../components/Header'
 import HeaderSettings from '../components/HeaderSettings'
 import { ScrollView } from 'react-native-gesture-handler';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
+
+import { useSelector, useDispatch } from 'react-redux'
+import allActions from '../actions'
 import axios from 'axios'
 
 function Home({ navigation }) {
@@ -24,6 +28,9 @@ function Home({ navigation }) {
   const [branches, setBranches] = useState()
   const [searchBranch, setSearchBranches] = useState()
   const [loader, setLoader] = useState(true)
+  
+  const cart = useSelector(state => state.cartItems);
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
     getBranch()
@@ -51,13 +58,52 @@ function Home({ navigation }) {
   };
 
   const goToChild = (item) => {
-    console.log(item.name)
-    navigation.navigate('Branch', {
-      BranchDetailsName: item.name,
-      BranchDetailsImage: item.logo,
-      Branch_ID: item._id,
-    })
+    // console.log(item)
+
+    console.log(cart)
+    if(cart.length == 0) {
+      console.log('no cart')
+      navigation.navigate('Branch', {
+        BranchDetailsName: item.name,
+        BranchDetailsImage: item.logo,
+        Branch_ID: item._id,
+      })
+    } else {
+      console.log('yes cart')
+      if (item._id === cart[0].item_branch_id) {
+        console.log('same')
+        navigation.navigate('Branch', {
+          BranchDetailsName: item.name,
+          BranchDetailsImage: item.logo,
+          Branch_ID: item._id,
+        })
+      } else {
+        console.log('not same')
+        Alert.alert(
+          'want to Order from different restaurant?',
+          `Adding items from this restaurant will clear your previous Cart`,
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => {
+                dispatch(allActions.cartActions.$REMOVE_ALL())
+                navigation.navigate('Branch', {
+                  BranchDetailsName: item.name,
+                  BranchDetailsImage: item.logo,
+                  Branch_ID: item._id,
+                })
+              }
+            },
+          ],
+          {cancelable: false},
+        )
+      }
+    }
   }
+
 
   return (
     <>
