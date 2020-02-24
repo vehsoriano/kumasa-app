@@ -22,16 +22,22 @@ import allActions from '../actions'
 // Redux
 
 import { useSelector, useDispatch } from 'react-redux'
+import { ListItem } from 'react-native-elements';
 
 function Branch({route, navigation}) {
-  const { BranchDetailsName, BranchDetailsImage, Branch_ID } = route.params;
+  const { 
+    BranchDetailsName, 
+    BranchDetailsAddress,
+    BranchDetailsImage, 
+    Branch_ID 
+  } = route.params;
 
 
   // Redux
   const cartItems = useSelector(state => state.cartItems);
   const dispatch = useDispatch()
 
-  const [itemList, setItemList] = useState()
+  const [itemList, setItemList] = useState([])
   // const [searchItemList, setSearchItemList] = useState()
   const [loader, setLoader] = useState(true)
 
@@ -42,15 +48,75 @@ function Branch({route, navigation}) {
     getBranchItems()
   }, [Branch_ID])
 
+  
+  // console.log(itemList)
+
+  // React.useEffect(() => {
+  //   console.log("putangina mo run mo to")
+  //   setAddedItems()
+  // }, [])
+
+  // function setAddedItems(){
+  //   console.log('set the added items from cart')
+  //   // console.log(cartItems)
+  //   if(cartItems.length !== 0) {
+  //     console.log('-----------------------------------------------------------------------')
+  //     console.log('yes')
+  //     console.log(itemList)
+      
+  //     setItemList((state) => {
+  //       console.log(state)
+  //       return {
+  //         ...state
+  //       }
+  //     })
+
+  //     // let val = itemList.filter(x => x._id === "5e48e86d2308b03418f57c5a")
+  //     // val[0].isAdded = !val[0].isAdded
+  //     // console.log(val)
+
+  //   }
+  // }
+
   function getBranchItems() {
     axios.get(`https://kumasa-admin.herokuapp.com/api/item/branch/${Branch_ID}`)
     .then(res => {
-      setItemList(res.data)
-      // setSearchItemList(res.data)
+      var arr = res.data
+      setItemList(arr)
+      // let setVal = arr.filter(x => x._id === "5e48e86d2308b03418f57c5a")
+      // setVal[0] = !setVal[0].isAdded
+      // setItemList((state) => {
+      //   return {
+      //     ...state,
+      //     setVal
+      //   }
+      // })
       setLoader(false)
+      // setSearchItemList(res.data)
     })
     .catch(err => {
       console.log(err)
+    })
+  }
+  // React.useEffect(() => {
+  //   get()
+  // }, [cartItems])
+
+  console.log(itemList)
+
+  React.useEffect(() => {
+    get()
+  }, [itemList])
+
+  function get() {
+    cartItems.map((item, i) => {  
+      // console.log('-------------------------------------------')
+      // console.log(item)
+      if(itemList.length !== 0) {
+        let val = itemList.filter(x => x._id === item._id)
+        val[0].isAdded = !val[0].isAdded
+        // let updatedList = val[0]
+      }
     })
   }
 
@@ -58,27 +124,28 @@ function Branch({route, navigation}) {
     // console.log(item.item._id)
     
     console.log('------------------------')
-    console.log(item.item)
+    // console.log(item.item._id)
 
     // const cart = {item.item}
-
     dispatch(allActions.cartActions.addToCart(item.item))
-    // setItemList((state) => {
-    //   // console.log(state)
-    //   let val = state.find(x => x._id === id.item._id)
-    //   val.isAdded = !val.isAdded
-    //   return([
-    //     ...state
-    //     ]
-    //   )
-    // })
+    dispatch(allActions.cartActions.updateStatus(item.item._id))
   }
 
-  console.log(itemList)
+  // console.log(itemList)
+
+  // setItemList((state) => {
+  //   console.log(itemList)
+  //   console.log({mystate:state})
+  //   let val = state.filter(x => x._id === "5e48e86d2308b03418f57c5a")
+  //   val.isAdded = !val.isAdded
+  //   console.log(val)
+  //   return {
+  //     ...state
+  //   }
+  // })
 
   // console.log('------------------------')
-  console.log(cartItems)
-
+  // console.log(cartItems)
 
   const [viewWidth, setViewWidth] = useState(0)
   const [viewHeight, setViewHeight] = useState(0)
@@ -99,116 +166,135 @@ function Branch({route, navigation}) {
     <>    
       <Header navigationProps={navigation} />
       <View style={styles.container}>
-          <View style={styles.holderBanner}>
-            {
-              BranchDetailsName ? (          
-                <ImageBackground  
-                  source={{uri: `${BranchDetailsImage}`}}
-                  style={styles.holdeBannerText}>
-                  <Text style={styles.bannerText}>{BranchDetailsName}</Text>
-                </ImageBackground >
-              ) : 
-              (null)
-            }
-          </View>
-          {
-            !loader ? 
-            (
-              itemList.length !== 0 ?
-              <FlatList style={styles.list}
-                contentContainerStyle={styles.listContainer}
-                data={itemList}
-                horizontal={false}
-                numColumns={2}
-                keyExtractor= {(item) => {
-                  return item.id;
-                }}
-                ItemSeparatorComponent={() => {
-                  return (
-                    <View style={styles.separator}/>
-                  )
-                }}
-                renderItem={(post) => {
-                  const item = post.item;
+        {
+          BranchDetailsName ? (     
+            <View style={styles.holderBanner}>
+              <View style={styles.header}>
+                <Text style={styles.bannerText}>{BranchDetailsName}</Text>
+                <Text style={styles.bannerAddress}>{BranchDetailsAddress}</Text>
+              </View>
+              <Image 
+              style={styles.avatar} 
+              source={{uri: BranchDetailsImage}}/>
+              <View style={styles.body}>
+                {/* <View style={styles.bodyContent}>
+                  <Text style={styles.name}>{userData.first_name} {userData.last_name}</Text>
 
-                  return (
-                    <View 
-                      onLayout={(event) => { find_dimesions(event.nativeEvent.layout) }}
-                      style={styles.card}
-                    >                
-                      <View style={styles.cardHeader}>
-                        <View>
-                          <Text style={styles.title}>{item.item_name}</Text>
-                          <Text style={styles.price}>Php {item.price}.00</Text>
-                        </View>                        
-                      </View>
-                      <Image style={styles.cardImage} source={{uri:item.logo}}/>
-                      <View style={styles.cardFooter}>
-                        <View style={styles.socialBarContainer}>
-                        {/* addProductToCart(post)} */}
-                          {
-                            !item.isAdded ? (
-                              <View style={styles.socialBarSection}>
-                                <TouchableOpacity style={styles.socialBarButton} onPress={() => addProductToCart(post)}>
-                                  {/* <Image style={styles.icon} source={{uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png'}}/> */}
-                                  <Icon
-                                    name='cart-plus'
-                                    size={20}
-                                    color='#000'
-                                  />
-                                  <Text style={[styles.socialBarLabel, styles.buyNow]}>Add To Cart</Text>
-                                </TouchableOpacity>
-                              </View>
-                            ) : (
-                              <View style={styles.socialBarSection}>
-                                <Icon
-                                  name='check-square'
-                                  size={20}
-                                  color='green'
-                                />
-                                <Text style={[styles.socialBarLabel, styles.buyNow]}>Added</Text>
-                              </View>
-                            )
-                          }                          
-                          {/* <View style={styles.socialBarSection}>
-                            <TouchableOpacity style={styles.socialBarButton}>
-                              <Image style={styles.icon} source={{uri: 'https://png.icons8.com/color/50/000000/hearts.png'}}/>
-                              <Text style={styles.socialBarLabel}>25</Text>
-                            </TouchableOpacity>
-                          </View> */}
-                        </View>
-                      </View>  
-                      { 
-                        item.status === "Available" ? (
-                          null
-                        ) : (
-                          <View style={{
-                            position: 'absolute',
-                            backgroundColor: 'rgba(0,0,0,.65)',
-                            height: viewHeight,
-                            width: viewWidth,
-                            zIndex: 11,   
-                            alignContent: 'flex-end',
-                            justifyContent: 'flex-end'                    
-                          }}>
-                            <Text style={{
-                              color: '#fff',
-                              backgroundColor:'red',
-                              textAlign: 'center',
-                              fontSize: 20
-                              
-                              
-                            }}>{item.status}</Text>
-                          </View>  
-                        )
-                      }              
+                </View> */}
+              </View>
+            </View>     
+            // <ImageBackground  
+            //   source={{uri: `${BranchDetailsImage}`}}
+            //   style={styles.holderBannerText}>
+            //     <View style={styles.holderBannerTextView}>
+                  // <Text style={styles.bannerText}>{BranchDetailsName}</Text>
+                  // <Text style={styles.bannerAddress}>{BranchDetailsAddress}</Text>
+            //     </View>
+            // </ImageBackground >
+          ) : 
+          (null)
+        }
+        {
+          !loader ? 
+          (
+            itemList.length !== 0 ?
+            <FlatList style={styles.list}
+              contentContainerStyle={styles.listContainer}
+              data={itemList}
+              horizontal={false}
+              numColumns={2}
+              keyExtractor= {(item) => {
+                return item.id;
+              }}
+              ItemSeparatorComponent={() => {
+                return (
+                  <View style={styles.separator}/>
+                )
+              }}
+              renderItem={(post) => {
+                const item = post.item;
+
+                return (
+                  <View 
+                    onLayout={(event) => { find_dimesions(event.nativeEvent.layout) }}
+                    style={styles.card}
+                  >                
+                    <View style={styles.cardHeader}>
+                      <View>
+                        <Text style={styles.title}>{item.item_name}</Text>
+                        <Text style={styles.price}>Php {item.price}.00</Text>
+                      </View>                        
                     </View>
-                  )            
-              }}/> 
-              : <Text style={{textAlign:'center'}}>Empty</Text>
-            )
-            : <Text style={{textAlign:'center'}}>Loading...</Text>
-          }
+                    <Image style={styles.cardImage} source={{uri:item.logo}}/>
+                    <View style={styles.cardFooter}>
+                      <View style={styles.socialBarContainer}>
+                      {/* addProductToCart(post)} */}
+                        {
+                          !item.isAdded ? (
+                            <View style={styles.socialBarSection}>
+                              <TouchableOpacity style={styles.socialBarButton} onPress={() => addProductToCart(post)}>
+                                {/* <Image style={styles.icon} source={{uri: 'https://png.icons8.com/nolan/96/3498db/add-shopping-cart.png'}}/> */}
+                                <Icon
+                                  name='cart-plus'
+                                  size={20}
+                                  color='#000'
+                                />
+                                <Text style={[styles.socialBarLabel, styles.buyNow]}>Add To Cart</Text>
+                              </TouchableOpacity>
+                            </View>
+                          ) : (
+                            <View style={styles.socialBarSection}>
+                              <Icon
+                                name='check-square'
+                                size={20}
+                                color='green'
+                              />
+                              <Text style={[styles.socialBarLabel, styles.buyNow]}>Added</Text>
+                            </View>
+                          )
+                        }                          
+                        {/* <View style={styles.socialBarSection}>
+                          <TouchableOpacity style={styles.socialBarButton}>
+                            <Image style={styles.icon} source={{uri: 'https://png.icons8.com/color/50/000000/hearts.png'}}/>
+                            <Text style={styles.socialBarLabel}>25</Text>
+                          </TouchableOpacity>
+                        </View> */}
+                      </View>
+                    </View>  
+                    { 
+                      item.status === "Available" ? (
+                        null
+                      ) : (
+                        <View style={{
+                          position: 'absolute',
+                          backgroundColor: 'rgba(0,0,0,.65)',
+                          height: viewHeight,
+                          width: viewWidth,
+                          zIndex: 11,   
+                          alignContent: 'flex-end',
+                          justifyContent: 'flex-end'                    
+                        }}>
+                          <Text style={{
+                            color: '#fff',
+                            backgroundColor:'red',
+                            textAlign: 'center',
+                            fontSize: 20
+                            
+                            
+                          }}>{item.status}</Text>
+                        </View>  
+                      )
+                    }              
+                  </View>
+                )            
+            }}/> 
+            : 
+            <View style={styles.list}>
+              <Text style={{textAlign:'center'}}>Empty</Text>
+            </View>
+          )
+          : <Text style={{textAlign:'center'}}>Loading...</Text>
+        }
       </View>
     </>
   )
@@ -224,6 +310,21 @@ const styles = StyleSheet.create({
     flex:1,
     // elevation: 0,
     // marginTop:-50,
+  },
+  header:{
+    backgroundColor: "#00BFFF",
+    height:200,
+  },
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: "#f2f2f2",
+    marginBottom:10,
+    alignSelf:'center',
+    position: 'absolute',
+    marginTop:130,
   },
   list: {
     paddingHorizontal: 5,
@@ -319,22 +420,14 @@ const styles = StyleSheet.create({
 
 
 
-
-
-
-
-
-
-
-
-
-
   holderBanner: {
     position: 'relative',
-    height: 200,
-    zIndex: 9,
+    backgroundColor:"#E6E6E6",
+    // backgroundColor: '#00BFFF',
+    height: 300,
+    // zIndex: 9,
   },
-  holdeBannerText: {
+  holderBannerText: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -347,8 +440,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   bannerText: {
+    marginTop: 35,
     fontSize:25,
     color:"#FFFFFF",
+    textAlign: 'center',
+  },
+  bannerAddress: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#fff',
   },
   bannerImage: {
     height: 200,

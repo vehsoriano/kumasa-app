@@ -128,7 +128,7 @@ function OrderHistory({navigation}) {
                       styles.description, 
                       styles.orderStatus,
                       item.status === "Pending" ? styles.orderStatusPending : '', 
-                      item.status === "Accepted" ? styles.orderStatusAccepted : '',
+                      item.status === "On Process" ? styles.orderStatusAccepted : '',
                       item.status === "Cancelled" ? styles.orderStatusCancelled : '',
                     ]
                   }>

@@ -137,7 +137,7 @@ function Payment({navigation}) {
             setType(itemValue)
           }>
           <Picker.Item label="Cash On Delivery" value="cod" />
-          <Picker.Item label="Online Payment" value="online" />
+          {/* <Picker.Item label="Online Payment" value="online" /> */}
         </Picker>
       </View>
       <Text style={style.warn}>

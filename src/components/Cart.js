@@ -86,7 +86,8 @@ function Cart({navigation}) {
 
   function deleteCartItem(data) {
     console.log('==================================')
-    console.log(data.index)
+    console.log(data)
+    dispatch(allActions.cartActions.updateStatus(data.item._id))
     dispatch(allActions.cartActions.removeToCart(data.index))
   }
 

@@ -1,11 +1,17 @@
 const cartItems = (state = [], action) => {
   switch(action.type) {
     case 'ADD_TO_CART':
+      console.log('Add to Cart')
       return [            
           ...state, 
           action.payload
       ]
-      
+    case 'UPDATE_STATE_CART':
+      // console.log('UPDATE THE CART')
+      const id = action.payload
+      let val = state.find(x => x._id === id)
+      val.isAdded = !val.isAdded
+      return state
     case 'REMOVE_FROM_CART':
       const arr = [...state]
       arr.splice(action.payload, 1)
@@ -14,6 +20,7 @@ const cartItems = (state = [], action) => {
       // state.filter(cartItem=>cartItem._id !== action.payload._id)
     case 'INCREASE_ITEM_QUANTITY':
       const incState = [...state]
+      console.log(incState)
       let incVal = incState.find(x =>x._id === action.payload)
       incVal.initialQuantity++
       // console.log(incState)

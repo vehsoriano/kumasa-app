@@ -58,13 +58,14 @@ function Home({ navigation }) {
   };
 
   const goToChild = (item) => {
-    // console.log(item)
+    console.log(item)
 
-    console.log(cart)
+    // console.log(cart)
     if(cart.length == 0) {
       console.log('no cart')
       navigation.navigate('Branch', {
         BranchDetailsName: item.name,
+        BranchDetailsAddress: item.address,
         BranchDetailsImage: item.logo,
         Branch_ID: item._id,
       })
@@ -74,6 +75,7 @@ function Home({ navigation }) {
         console.log('same')
         navigation.navigate('Branch', {
           BranchDetailsName: item.name,
+          BranchDetailsAddress: item.address,
           BranchDetailsImage: item.logo,
           Branch_ID: item._id,
         })
@@ -92,6 +94,7 @@ function Home({ navigation }) {
                 dispatch(allActions.cartActions.$REMOVE_ALL())
                 navigation.navigate('Branch', {
                   BranchDetailsName: item.name,
+                  BranchDetailsAddress: item.address,
                   BranchDetailsImage: item.logo,
                   Branch_ID: item._id,
                 })
@@ -168,8 +171,8 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 200,
     // marginTop: 50,
-    // zIndex: -1,
-    // elevation: 0,
+    zIndex: -1,
+    elevation: 0,
     // marginTop:-50,
   },
   holdeBannerText: {

@@ -37,7 +37,12 @@ function Header({navigationProps}) {
       </View>
       {/* <View style={{marginLeft: 15}}> */}
       <TouchableOpacity onPress={() => navigationProps.navigate('Home')}>
-        <Image style={style.icon} source={{uri:'https://i.imgur.com/jaT8Frm.png'}}/>
+        <Icon
+          name='home'
+          size={32}
+          color='#FC9404'
+        />
+        {/* <Image style={style.icon} source={{uri:'https://i.imgur.com/jaT8Frm.png'}}/> */}
       </TouchableOpacity>
       <View style={[style.menuIconHolder, style.cartMenuHolder]}>
         <TouchableOpacity 

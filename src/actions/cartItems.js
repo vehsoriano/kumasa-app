@@ -32,10 +32,18 @@ const decreaseQTY = (id) => {
   }
 }
 
+const updateStatus = (id) => {
+  return {
+    type: "UPDATE_STATE_CART",
+    payload:id
+  }
+}
+
 export default {
   addToCart,
   removeToCart,
   increaseQTY,
   decreaseQTY,
-  $REMOVE_ALL
+  $REMOVE_ALL,
+  updateStatus
 }
