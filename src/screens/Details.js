@@ -22,6 +22,8 @@ function Details({ route, navigation }) {
   const { branchParams, itemParams } = route.params
   const [total, setTotal] = useState(0)  
 
+  console.log(branchParams)
+
   useEffect(() => {
     getTotal()
   }, [itemParams])
@@ -58,7 +60,7 @@ function Details({ route, navigation }) {
             {branchParams.order_branch}
           </Text>
           <Text style={styles.branchAddress}>
-            {branchParams.order_address}
+            {branchParams.address}
           </Text>
       </View>
       <View style={styles.viewHolder}>
@@ -67,7 +69,7 @@ function Details({ route, navigation }) {
           <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
             Order Id: &nbsp;
             <Text style={{fontWeight: 'normal'}}>
-            {branchParams.order_id}
+              {branchParams.order_id}
             </Text>
           </Text>
           <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
@@ -78,6 +80,32 @@ function Details({ route, navigation }) {
               element={Text}>
               {branchParams.order_date}
             </Moment>
+          </Text>
+          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+            Delivery Address: &nbsp;
+            {/* Needs Data */}
+          </Text>
+          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+            Payment method: &nbsp;
+            {/* Needs Data */}
+            <Text style={{fontWeight: 'normal'}}>
+              Cash on Delivery
+            </Text>
+          </Text>
+        </View>
+      </View>
+      <View style={styles.viewHolder}>
+        <Text style={styles.bannerTitle}> Rider Details</Text> 
+        <View style={styles.orderDetails}>
+          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+            Rider Id: &nbsp;
+            <Text style={{fontWeight: 'normal'}}>
+            {/* {branchParams.order_id} */}
+            </Text>
+          </Text>
+          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+            Rider Contact #: &nbsp;
+            {/* Needs Data */}
           </Text>
         </View>
       </View>
@@ -98,19 +126,37 @@ function Details({ route, navigation }) {
                 <Text style={[styles.itemFlex]}>{item.item_name}</Text>
                 <Text style={[styles.itemFlex]}>{item.price}</Text>
                 <Text style={[styles.itemFlex, styles.itemCenter]}>{item.qty}</Text>
-                <Text style={[styles.itemFlex]}>Php {item.total}</Text>
+                <Text style={[styles.itemFlex]}>Php {item.total}.00</Text>
               </View>               
             </>
           )
         })}              
       </View>
-      <View style={[styles.viewHolder, {paddingBottom: 25}]}>
+      <View style={[styles.viewHolderPrice, {paddingTop: 25}]}>
+        <View style={styles.orderItems}>
+          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Sub Total</Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total}.00</Text>
+        </View> 
+      </View>
+      <View style={[styles.viewHolderPrice]}>
+        <View style={styles.orderItems}>
+          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Delivery Fee</Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php 59.00</Text>
+        </View> 
+      </View>
+      <View style={[styles.viewHolderPrice, {paddingBottom: 25}]}>
         <View style={styles.orderItems}>
           {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
           <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
           <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
           <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total}</Text>
+          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total + 59}.00</Text>
         </View> 
       </View>
     </>
@@ -161,6 +207,10 @@ const styles = StyleSheet.create({
   viewHolder: {
     backgroundColor: '#fff',
     paddingTop: 25,
+    paddingHorizontal: 25,
+  },
+  viewHolderPrice: {
+    backgroundColor: '#fff',
     paddingHorizontal: 25,
   },
   orderDetails: {

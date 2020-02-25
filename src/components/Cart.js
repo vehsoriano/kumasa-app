@@ -163,7 +163,29 @@ function Cart({navigation}) {
         rightOpenValue={-75}
         />
       <View style={styles.bottomTotalHolder}>
-        <Text style={styles.totalText}>Total: Php{total}</Text>
+        {/* <View>
+          <Text style={styles.totalText}>Total: Php{total}</Text>
+        </View> */}
+        <View style={{flexDirection: 'row', marginBottom: 15, marginTop: 15}}>
+          <Text style={styles.totalText}>Sub Total:</Text>
+          <Text style={[styles.totalText, {marginLeft:'auto'}]}>Php {total}.00</Text>
+        </View>
+        <View style={{flexDirection: 'row', marginBottom: 15}}>
+          <Text style={styles.totalText}>Delivery Fee:</Text>
+          <Text style={[styles.totalText, {marginLeft:'auto'}]}>Php 59.00</Text>
+        </View>
+        <View style={{flexDirection: 'row', marginBottom: 15}}>
+          <Text style={styles.totalText}>Amount Payable</Text>
+          <Text style={
+            [styles.totalText, {
+              marginLeft:'auto', 
+              fontSize: 25,
+              fontWeight: 'bold'
+            }]
+          }>
+            Php {total + 59}.00
+          </Text>
+        </View>
       </View> 
       {/* <TouchableOpacity onPress={() => addTemp()}>
           <Text>Add Temp Item</Text>
@@ -257,7 +279,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   totalText: {
-    textAlign: 'center',
+    // textAlign: 'center',
     color: 'white',
     fontSize: 20
   },

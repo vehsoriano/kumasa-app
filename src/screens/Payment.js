@@ -28,6 +28,7 @@ function Payment({navigation}) {
   const [landmark, setLandmark] = useState('')
   const [userData, setUserData] = useState('')
   const [type, setType] = useState('')
+  const [addressType, setAddressType] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -61,6 +62,9 @@ function Payment({navigation}) {
   const makePayment = () => {
     const arr = []
     console.log('make payment')
+    console.log('--------------')
+    // console.log(userData.address)
+    // console.log(address)
     cart.map((item, i) => {     
       arr.push({
         order_item_id: item._id,
@@ -68,9 +72,20 @@ function Payment({navigation}) {
       })
     })
 
-    const req = {
-      items: arr 
+    var req
+    if (addressType === 'profileAddress') {
+      console.log('profile')
+      req = {
+        items: arr 
+      }
+    } else if(addressType === 'differentAddress') {
+      console.log('different')
+      req = {
+        items: arr,
+        address 
+      }
     }
+    console.log(req)    
 
     axios.post(`https://kumasa-admin.herokuapp.com/api/order/${userData._id}`, req)
       .then(res => {
@@ -86,53 +101,80 @@ function Payment({navigation}) {
   }
 
   return (
-    <ScrollView>
-      <Text style={style.title}>Delivery Address</Text>
-      <View style={container}>
-        <View style={formGroup}>
-          <Input
-            label="Delivery Address"
-            placeholder='1 Holy Angel St, Angeles, 2009 Pampanga'
-            labelStyle={labelStyle}
-            inputContainerStyle={formInput}
-            rightIcon={
-              <Icon
-                name='map-marker'
-                size={20}
-                color='#FCD69D'
-              />
-            }
-            onChangeText={(address) => setAddress(address)}
-            value={address}
-          />
-        </View>
-        <View style={formGroup}>
-          <Input
-            label="Landmark"
-            placeholder='Church'
-            labelStyle={labelStyle}
-            inputContainerStyle={formInput}
-            rightIcon={
-              <Icon
-                name='map-marker'
-                size={20}
-                color='#FCD69D'
-              />
-            }
-            onChangeText={(landmark) => setLandmark(landmark)}
-            value={landmark}
-          />
-        </View>
+    <ScrollView style={{backgroundColor: '#fff'}}>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
+        <Picker
+          selectedValue={addressType}
+          style={{height: 50, width: ScreenWidth - 40}}
+          onValueChange={(addressType, itemIndex) =>
+            setAddressType(addressType)
+          }>
+          <Picker.Item label="Profile Address" value="profileAddress" />
+          <Picker.Item label="Use different address" value="differentAddress" />
+        </Picker>
       </View>
+      {
+        addressType === 'differentAddress' ? (
+          <>
+          <Text style={style.title}>Use different address</Text>
+            <Text style={[style.warn, {marginBottom: 0}]}>
+              Note: Please complete the address field correctly, Include Block and Lot numbers and street name 
+              Failure to include this may possibly delay your order.
+            </Text>
+            <View style={container}>
+              <View style={formGroup}>
+                <Input
+                  label="Delivery Address"
+                  placeholder='1 Holy Angel St, Angeles, 2009 Pampanga'
+                  labelStyle={labelStyle}
+                  inputContainerStyle={formInput}
+                  rightIcon={
+                    <Icon
+                      name='map-marker'
+                      size={20}
+                      color='#FCD69D'
+                    />
+                  }
+                  onChangeText={(address) => setAddress(address)}
+                  value={address}
+                />
+              </View>
+              {/* <View style={formGroup}>
+                <Input
+                  label="Landmark"
+                  placeholder='Church'
+                  labelStyle={labelStyle}
+                  inputContainerStyle={formInput}
+                  rightIcon={
+                    <Icon
+                      name='map-marker'
+                      size={20}
+                      color='#FCD69D'
+                    />
+                  }
+                  onChangeText={(landmark) => setLandmark(landmark)}
+                  value={landmark}
+                />
+              </View> */}
+            </View>
+          </>
+        ) : ( 
+          null
+        )
+      }
+
       <View style={style.separator}></View>
-      <Text style={style.title}>Cart Items</Text>
+      <Text style={[style.title, {paddingTop: 30}]}>Cart Items</Text>
       <CustomCart />
       <View style={style.separator}></View>
-      <Text style={style.title}>Payment Method</Text>
+      <Text style={[style.title, {paddingTop: 30}]}>Payment Method</Text>
       <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
         <Picker
           selectedValue={type}
-          style={{height: 50, width: ScreenWidth}}
+          style={{
+            height: 50, 
+            width: ScreenWidth - 40,
+          }}
           onValueChange={(itemValue, itemIndex) =>
             setType(itemValue)
           }>
@@ -167,7 +209,7 @@ export default Payment
 const style = StyleSheet.create({
 
   title: {
-    paddingTop: 30,
+    // paddingTop: 30,
     paddingLeft: 30,
     paddingRight: 30,
     paddingBottom:0,
