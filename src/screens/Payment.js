@@ -28,7 +28,7 @@ function Payment({navigation}) {
   const [landmark, setLandmark] = useState('')
   const [userData, setUserData] = useState('')
   const [type, setType] = useState('')
-  const [addressType, setAddressType] = useState('')
+  const [addressType, setAddressType] = useState('profileAddress')
   const dispatch = useDispatch()
 
   useEffect(() => {

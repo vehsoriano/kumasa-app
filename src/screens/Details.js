@@ -16,6 +16,7 @@ import Moment from 'react-moment';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
 import axios from 'axios'
+import { ScrollView } from 'react-native-gesture-handler';
 // import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 function Details({ route, navigation }) {
@@ -23,6 +24,7 @@ function Details({ route, navigation }) {
   const [total, setTotal] = useState(0)  
 
   console.log(branchParams)
+  console.log(itemParams)
 
   useEffect(() => {
     getTotal()
@@ -52,6 +54,21 @@ function Details({ route, navigation }) {
     }
   } 
 
+  const ORDER = 
+  
+  branchParams.order_address ? (
+      <Text style={{fontWeight: 'normal'}}>
+        {branchParams.order_address}       
+      </Text>
+    ) : (
+      <Text style={{fontWeight: 'normal'}}>
+        {branchParams.address}       
+      </Text>
+    )
+  
+  
+  
+
   return (
     <>
       <View style={styles.banner}>
@@ -60,105 +77,110 @@ function Details({ route, navigation }) {
             {branchParams.order_branch}
           </Text>
           <Text style={styles.branchAddress}>
-            {branchParams.address}
+            {branchParams.branch_order_address}
           </Text>
       </View>
-      <View style={styles.viewHolder}>
-        <Text style={styles.bannerTitle}> Order Details</Text> 
-        <View style={styles.orderDetails}>
-          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-            Order Id: &nbsp;
-            <Text style={{fontWeight: 'normal'}}>
-              {branchParams.order_id}
+      <ScrollView>
+        <View style={styles.viewHolder}>
+          <Text style={styles.bannerTitle}> Order Details</Text> 
+          <View style={styles.orderDetails}>
+            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+              Order Id: &nbsp;
+              <Text style={{fontWeight: 'normal'}}>
+                {branchParams.order_id}
+              </Text>
             </Text>
-          </Text>
-          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-            Ordered On: &nbsp;
-            <Moment 
-              style={{fontWeight: 'normal'}}
-              format="LLL" 
-              element={Text}>
-              {branchParams.order_date}
-            </Moment>
-          </Text>
-          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-            Delivery Address: &nbsp;
-            {/* Needs Data */}
-          </Text>
-          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-            Payment method: &nbsp;
-            {/* Needs Data */}
-            <Text style={{fontWeight: 'normal'}}>
-              Cash on Delivery
+            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+              Ordered On: &nbsp;
+              <Moment 
+                style={{fontWeight: 'normal'}}
+                format="LLL" 
+                element={Text}>
+                {branchParams.order_date}
+              </Moment>
             </Text>
-          </Text>
+            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+              Delivery Address: &nbsp;
+              
+              {ORDER}
+
+              
+            </Text>
+            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+              Payment method: &nbsp;
+              {/* Needs Data */}
+              <Text style={{fontWeight: 'normal'}}>
+                Cash on Delivery
+              </Text>
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.viewHolder}>
-        <Text style={styles.bannerTitle}> Rider Details</Text> 
-        <View style={styles.orderDetails}>
-          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-            Rider Id: &nbsp;
-            <Text style={{fontWeight: 'normal'}}>
-            {/* {branchParams.order_id} */}
+        <View style={styles.viewHolder}>
+          <Text style={styles.bannerTitle}> Rider Details</Text> 
+          <View style={styles.orderDetails}>
+            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+              Rider Id: &nbsp;
+              <Text style={{fontWeight: 'normal'}}>
+              {/* {branchParams.order_id} */}
+              </Text>
             </Text>
-          </Text>
-          <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-            Rider Contact #: &nbsp;
-            {/* Needs Data */}
-          </Text>
+            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+              Rider Contact #: &nbsp;
+              {/* Needs Data */}
+            </Text>
+          </View>
         </View>
-      </View>
-      <View style={styles.viewHolder}>
-        <Text style={styles.bannerTitle}> Order Items</Text>   
-        <View style={styles.orderItems}>
-          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Item</Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Price</Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Quantity</Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
-        </View>     
-        {itemParams.map((item, i) => {
-          return (
-            <>
-              <View style={styles.orderItems}>
-                {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-                <Text style={[styles.itemFlex]}>{item.item_name}</Text>
-                <Text style={[styles.itemFlex]}>{item.price}</Text>
-                <Text style={[styles.itemFlex, styles.itemCenter]}>{item.qty}</Text>
-                <Text style={[styles.itemFlex]}>Php {item.total}.00</Text>
-              </View>               
-            </>
-          )
-        })}              
-      </View>
-      <View style={[styles.viewHolderPrice, {paddingTop: 25}]}>
-        <View style={styles.orderItems}>
-          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Sub Total</Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total}.00</Text>
-        </View> 
-      </View>
-      <View style={[styles.viewHolderPrice]}>
-        <View style={styles.orderItems}>
-          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Delivery Fee</Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php 59.00</Text>
-        </View> 
-      </View>
-      <View style={[styles.viewHolderPrice, {paddingBottom: 25}]}>
-        <View style={styles.orderItems}>
-          {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-          <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total + 59}.00</Text>
-        </View> 
-      </View>
+        <View style={styles.viewHolder}>
+          <Text style={styles.bannerTitle}> Order Items</Text>   
+          <View style={styles.orderItems}>
+            {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Item</Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Price</Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Quantity</Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
+          </View>     
+          {itemParams.map((item, i) => {
+            return (
+              <>
+                <View style={styles.orderItems}>
+                  {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+                  <Text style={[styles.itemFlex]}>{item.item_name}</Text>
+                  <Text style={[styles.itemFlex]}>{item.price}</Text>
+                  <Text style={[styles.itemFlex, styles.itemCenter]}>{item.qty}</Text>
+                  <Text style={[styles.itemFlex]}>Php {item.total}.00</Text>
+                </View>               
+              </>
+            )
+          })}              
+        </View>
+        <View style={[styles.viewHolderPrice, {paddingTop: 25}]}>
+          <View style={styles.orderItems}>
+            {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Sub Total</Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total}.00</Text>
+          </View> 
+        </View>
+        <View style={[styles.viewHolderPrice]}>
+          <View style={styles.orderItems}>
+            {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Delivery Fee</Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php 59.00</Text>
+          </View> 
+        </View>
+        <View style={[styles.viewHolderPrice, {paddingBottom: 25}]}>
+          <View style={styles.orderItems}>
+            {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
+            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total + 59}.00</Text>
+          </View> 
+        </View>
+      </ScrollView>
     </>
   );
 }
@@ -207,11 +229,11 @@ const styles = StyleSheet.create({
   viewHolder: {
     backgroundColor: '#fff',
     paddingTop: 25,
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
   },
   viewHolderPrice: {
     backgroundColor: '#fff',
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
   },
   orderDetails: {
     display: 'flex',

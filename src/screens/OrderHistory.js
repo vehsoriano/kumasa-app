@@ -27,6 +27,7 @@ function OrderHistory({navigation}) {
   function getBranch() {
     axios.get('https://kumasa-admin.herokuapp.com/api/order/orders')
     .then(res => {
+      // console.log(res)
       setOrders(res.data)
     })
     .catch(err => {
@@ -68,8 +69,12 @@ function OrderHistory({navigation}) {
   // )
 
   function goToOrderBranch(item) {
+
+    console.log(item)
+
     axios.get(`https://kumasa-admin.herokuapp.com/api/order/ordersItem/${item.order_id}`)
       .then(res => {
+        // console.log(res.data)
         navigation.navigate('Details', {
           branchParams: item,
           itemParams: res.data
@@ -140,7 +145,7 @@ function OrderHistory({navigation}) {
                     Date: &nbsp; 
                     <Moment 
                       style={{fontWeight: 'normal'}}
-                      format="LL" 
+                      format="lll" 
                       element={Text}>
                       {item.order_date}
                     </Moment>
@@ -246,7 +251,7 @@ const styles = StyleSheet.create({
   orderNum: {
     fontWeight: 'bold',
     color: '#000',
-    fontSize: 18,
+    fontSize: 16,
 
     // backgroundColor: 'blue'
   },

@@ -23,6 +23,7 @@ import allActions from '../actions'
 function Cart({navigation}) {
 
 
+  const [deliveryFee, setDeliveryFee] = useState(59)
   const cart = useSelector(state => state.cartItems);
 
   // const [cart, setCart] = useState([])
@@ -82,7 +83,19 @@ function Cart({navigation}) {
     //   ])
     // })
   }
+  
+  useEffect(() => {
+    updateDeliveryFee()
+  }, [cart])
 
+  function updateDeliveryFee() {
+    if(cart.length === 0) {
+      console.log('no item')
+      setDeliveryFee(0)
+    } else {
+      console.log('yes item')
+    }
+  }
 
   function deleteCartItem(data) {
     console.log('==================================')
@@ -172,7 +185,7 @@ function Cart({navigation}) {
         </View>
         <View style={{flexDirection: 'row', marginBottom: 15}}>
           <Text style={styles.totalText}>Delivery Fee:</Text>
-          <Text style={[styles.totalText, {marginLeft:'auto'}]}>Php 59.00</Text>
+          <Text style={[styles.totalText, {marginLeft:'auto'}]}>Php {deliveryFee}.00</Text>
         </View>
         <View style={{flexDirection: 'row', marginBottom: 15}}>
           <Text style={styles.totalText}>Amount Payable</Text>
@@ -183,7 +196,7 @@ function Cart({navigation}) {
               fontWeight: 'bold'
             }]
           }>
-            Php {total + 59}.00
+            Php {total + deliveryFee}.00
           </Text>
         </View>
       </View> 
