@@ -34,6 +34,7 @@ import Cart from './src/screens/Cart'
 import Settings from './src/screens/Settings'
 import Payment from './src/screens/Payment'
 import Accepted from './src/screens/Accepted'
+import Terms from './src/screens/Terms'
 
 
 const Stack = createStackNavigator();
@@ -96,6 +97,7 @@ function Routes() {
               <Stack.Screen name="Branch"  component={Branch} options={{headerShown: false}}/>  
               <Stack.Screen name="Settings"  component={Settings} /> 
               <Stack.Screen name="Payment"  component={Payment} />   
+              <Stack.Screen name="Terms"  component={Terms} /> 
               <Stack.Screen name="Accepted"  component={Accepted} options={{headerShown: false}}/>    
             </Stack.Navigator>
           )         

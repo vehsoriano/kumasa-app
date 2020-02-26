@@ -146,7 +146,7 @@ function OrderHistory({navigation}) {
                     Date: &nbsp; 
                     <Moment 
                       style={{fontWeight: 'normal'}}
-                      format="lll" 
+                      format="ll" 
                       element={Text}>
                       {item.order_date}
                     </Moment>

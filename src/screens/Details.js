@@ -175,28 +175,28 @@ function Details({ route, navigation }) {
         <View style={[styles.viewHolderPrice, {paddingTop: 25}]}>
           <View style={styles.orderItems}>
             {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Sub Total</Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total}.00</Text>
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}>Sub Total</Text>
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}></Text>
+            {/* <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text> */}
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}>Php {total}.00</Text>
           </View> 
         </View>
         <View style={[styles.viewHolderPrice]}>
           <View style={styles.orderItems}>
             {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Delivery Fee</Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php 59.00</Text>
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}>Delivery Fee</Text>
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}></Text>
+            {/* <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text> */}
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}>Php 59.00</Text>
           </View> 
         </View>
         <View style={[styles.viewHolderPrice, {paddingBottom: 25}]}>
           <View style={styles.orderItems}>
             {/* <Image source={{ uri: item.logo }} style={styles.pic} /> */}
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Total</Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text>
-            <Text style={[styles.itemFlex, styles.itemFlexTitle]}>Php {total + 59}.00</Text>
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}>Total</Text>
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}></Text>
+            {/* <Text style={[styles.itemFlex, styles.itemFlexTitle]}></Text> */}
+            <Text style={[styles.itemFlexThird, styles.itemFlexTitle]}>Php {total + 59}.00</Text>
           </View> 
         </View>
       </ScrollView>
@@ -271,6 +271,9 @@ const styles = StyleSheet.create({
   },
   itemFlex: {
     width: screenWidth / 4,
+  },
+  itemFlexThird: {
+    width: screenWidth / 3,
   },
   itemFlexTitle: {
     fontWeight: 'bold',

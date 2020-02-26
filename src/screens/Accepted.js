@@ -24,8 +24,8 @@ function Accepted({route, navigation}) {
         />
         <Text style={styles.title}>Congratulations {userData_id}, your order has been placed</Text>
         <Text style={styles.description}>Congratulations your order has been succesfully placed and is being processed by our Kumasa Riders</Text>
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}>Back to Home</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => navigation.navigate('OrderHistory')}>
+          <Text style={styles.buttonText}>Go to Orders</Text>
         </TouchableHighlight>
       </View>
   )

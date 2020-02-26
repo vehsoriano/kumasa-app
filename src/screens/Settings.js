@@ -40,6 +40,12 @@ function Settings({navigation}) {
         image:"history"
       }, {
         id:3, 
+        title: "Terms",   
+        color:"#20B2AA",
+        route: "Terms", 
+        image:"copy"
+      }, {
+        id:4, 
         title: "Logout",   
         color:"#6A5ACD",
         isLogout: true,

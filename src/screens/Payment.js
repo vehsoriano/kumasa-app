@@ -13,7 +13,7 @@ import { useSelector, useDispatch} from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios'
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-community/async-storage';
 let ScreenHeight = Dimensions.get("window").height;
 let ScreenWidth = Dimensions.get("window").width;
@@ -29,6 +29,7 @@ function Payment({navigation}) {
   const [userData, setUserData] = useState('')
   const [type, setType] = useState('')
   const [addressType, setAddressType] = useState('profileAddress')
+  const [deliveryType, setDeliveryType] = useState('pickup')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -102,6 +103,12 @@ function Payment({navigation}) {
 
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
+      
+      <Text style={[style.title, {paddingTop: 30}]}>
+        {
+          addressType === 'differentAddress' ? 'Different Address' : 'Address'
+        }
+      </Text>
       <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
         <Picker
           selectedValue={addressType}
@@ -116,7 +123,7 @@ function Payment({navigation}) {
       {
         addressType === 'differentAddress' ? (
           <>
-          <Text style={style.title}>Use different address</Text>
+          {/* <Text style={style.title}>Use different address</Text> */}
             <Text style={[style.warn, {marginBottom: 0}]}>
               Note: Please complete the address field correctly, Include Block and Lot numbers and street name 
               Failure to include this may possibly delay your order.
@@ -166,6 +173,55 @@ function Payment({navigation}) {
       <View style={style.separator}></View>
       <Text style={[style.title, {paddingTop: 30}]}>Cart Items</Text>
       <CustomCart />
+
+      <View style={style.separator}></View>
+    
+      <Text style={[style.title, {paddingTop: 20}]}>
+        {
+          deliveryType === 'pickup' ? 'Pickup' : 'For Reservation'
+        }
+      </Text>
+      <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
+        <Picker
+          selectedValue={deliveryType}
+          style={{height: 50, width: ScreenWidth - 40}}
+          onValueChange={(deliveryType, itemIndex) =>
+            setDeliveryType(deliveryType)
+          }>
+          <Picker.Item label="Pickup" value="pickup" />
+          <Picker.Item label="Delivery" value="delivery" />
+        </Picker>
+      </View>
+
+      {
+        deliveryType === 'delivery' ? (
+            <>
+              <View style={container}>
+                <View style={formGroup}>
+                  <Input
+                    label="Reservation Time"
+                    placeholder='5:00PM'
+                    labelStyle={labelStyle}
+                    inputContainerStyle={formInput}
+                    rightIcon={
+                      <Icon
+                        name='calendar'
+                        size={20}
+                        color='#FCD69D'
+                      />
+                    }
+                    onChangeText={(address) => setAddress(address)}
+                    value={address}
+                  />
+                </View>
+              </View>
+            </>
+          ) : (
+            null
+          )
+      }
+      
+
       <View style={style.separator}></View>
       <Text style={[style.title, {paddingTop: 30}]}>Payment Method</Text>
       <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
@@ -197,9 +253,12 @@ function Payment({navigation}) {
         }
         title="Make payment"
       />
-      <Text
-        style={{fontSize: 12, textAlign: 'center', marginTop: 10, marginBottom: 25}}
-      >By clicking MAKE PAYMENT, You Agree with our Terms and Conditions</Text>
+      <View>
+        <Text style={{fontSize: 12, textAlign: 'center', marginTop: 10, marginBottom: 5}} >By clicking MAKE PAYMENT, You Agree with our </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Terms')}>
+        <Text style={{fontSize: 12, textAlign: 'center', marginBottom: 25}}>Terms and Conditions</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   )
 }
