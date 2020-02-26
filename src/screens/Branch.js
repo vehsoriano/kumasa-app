@@ -225,17 +225,24 @@ function Branch({route, navigation}) {
                         <Text style={styles.price}>Php {item.price}.00</Text>
                       </View>                        
                     </View>
-                    <View style={{
-                      position: 'absolute',
-                      top: 10,
-                      right: 10,
-                    }}>
-                      <Icon
-                        name='star'
-                        size={20}
-                        color='yellow'
-                      />
-                    </View>
+                    {
+                      item.recommended === "Yes" ? (
+                        <View style={{
+                          position: 'absolute',
+                          top: 10,
+                          right: 10,
+                        }}>
+                          <Icon
+                            name='star'
+                            size={20}
+                            color='orange'
+                          />
+                        </View>
+                      ) : (
+                        null
+                      )
+                    }
+                    
                     <Image style={styles.cardImage} source={{uri:item.logo}}/>
                     <View style={styles.cardFooter}>
                       <View style={styles.socialBarContainer}>
