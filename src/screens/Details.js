@@ -81,6 +81,38 @@ function Details({ route, navigation }) {
           </Text>
       </View>
       <ScrollView>
+      {
+          branchParams.status === "Pending" ? (
+            <View style={styles.viewHolder}>
+              <Text style={styles.bannerTitle}>Waiting for riders to accept your order</Text> 
+            </View>
+          ) : (
+            <View style={styles.viewHolder}>
+              <Text style={styles.bannerTitle}> Rider Details</Text> 
+              <View style={styles.orderDetails}>
+                <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+                  Rider Id: &nbsp;
+                  <Text style={{fontWeight: 'normal'}}>
+                  {/* {branchParams.order_id} */}
+                  </Text>
+                </Text>
+                <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+                  Rider Contact #: &nbsp;
+                  {/* Needs Data */}
+                </Text>
+                <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+                  Payment method: &nbsp;
+                  {/* Needs Data */}
+                  <Text style={{fontWeight: 'normal'}}>
+                    Cash on Delivery
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          )
+        }
+
+        
         <View style={styles.viewHolder}>
           <Text style={styles.bannerTitle}> Order Details</Text> 
           <View style={styles.orderDetails}>
@@ -107,29 +139,16 @@ function Details({ route, navigation }) {
               
             </Text>
             <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-              Payment method: &nbsp;
+              Landmark: &nbsp;
               {/* Needs Data */}
               <Text style={{fontWeight: 'normal'}}>
-                Cash on Delivery
+                
               </Text>
             </Text>
           </View>
         </View>
-        <View style={styles.viewHolder}>
-          <Text style={styles.bannerTitle}> Rider Details</Text> 
-          <View style={styles.orderDetails}>
-            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-              Rider Id: &nbsp;
-              <Text style={{fontWeight: 'normal'}}>
-              {/* {branchParams.order_id} */}
-              </Text>
-            </Text>
-            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-              Rider Contact #: &nbsp;
-              {/* Needs Data */}
-            </Text>
-          </View>
-        </View>
+
+
         <View style={styles.viewHolder}>
           <Text style={styles.bannerTitle}> Order Items</Text>   
           <View style={styles.orderItems}>

@@ -133,8 +133,9 @@ function OrderHistory({navigation}) {
                       styles.description, 
                       styles.orderStatus,
                       item.status === "Pending" ? styles.orderStatusPending : '', 
-                      item.status === "On Process" ? styles.orderStatusAccepted : '',
-                      item.status === "Cancelled" ? styles.orderStatusCancelled : '',
+                      item.status === "Accepted" ? styles.orderStatusDelivered : '',
+                      item.status === "Delivered" ? styles.orderStatusAccepted : '',
+                      item.status === "Rejected" ? styles.orderStatusRejected : '',
                     ]
                   }>
                     {item.status}
@@ -274,7 +275,13 @@ const styles = StyleSheet.create({
   orderStatusAccepted: {
     backgroundColor: 'green'
   },
-  orderStatusCancelled: {
+  orderStatusDelivered: {
+    color: 'green',
+    borderColor: 'green',
+    borderWidth: 1,
+    fontWeight: 'bold'
+  },  
+  orderStatusRejected: {
     backgroundColor: 'red'
   }
 });
