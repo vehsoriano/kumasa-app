@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     height: ScreenHeight,
   },
   avatar: {
-    width: ScreenWidth,
+    width: ScreenWidth - 30,
     height: 70,
   },
 })
