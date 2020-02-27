@@ -94,7 +94,7 @@ function Signup({navigation}) {
         <View style={styles.header}>
           <View style={styles.headerContent}>
             <Image style={styles.avatar}
-                source={{uri: 'https://i.imgur.com/WNO3kFq.png'}}/>
+                source={{uri: 'https://i.imgur.com/k32uMed.png'}}/>
             <Text style={styles.name}>
               Welcome to Kumasa Registration!
             </Text>
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     height: ScreenHeight,
   },
   loaderAvatar: {
-    width: ScreenWidth - 100,
+    width: ScreenWidth - 30,
     height: 85,
     marginLeft: 'auto',
     marginRight: 'auto'
