@@ -84,7 +84,7 @@ function Signup({navigation}) {
           //   >Loading...</Text>
           // </View>
           <View style={styles.loaderHolder}>
-            <Image style={styles.loaderAvatar} source={{uri:'https://i.imgur.com/jaT8Frm.png'}}/>
+            <Image style={styles.loaderAvatar} source={{uri:'https://i.imgur.com/xCpTTEB.png'}}/>
           </View>
         ) : (
           null
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     height: ScreenHeight,
   },
   loaderAvatar: {
-    width: ScreenWidth - 50,
+    width: ScreenWidth - 100,
     height: 85,
     marginLeft: 'auto',
     marginRight: 'auto'

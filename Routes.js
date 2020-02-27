@@ -79,7 +79,7 @@ function Routes() {
       {
         visualLoader ? (
           <View style={styles.loaderHolder}>
-            <Image style={styles.avatar} source={{uri:'https://i.imgur.com/jaT8Frm.png'}}/>
+            <Image style={styles.avatar} source={{uri:'https://i.imgur.com/xCpTTEB.png'}}/>
           </View>
         ) : (        
           auth === false ? (  

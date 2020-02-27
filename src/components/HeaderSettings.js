@@ -24,7 +24,7 @@ function HeaderSettings({navigationProps}) {
       <View style={style.menuIconHolder}>
       </View>
       <View>
-        <Image style={style.icon} source={{uri:'https://i.imgur.com/jaT8Frm.png'}}/>
+        <Image style={style.icon} source={{uri:'https://i.imgur.com/xCpTTEB.png'}}/>
       </View>
       <View style={[style.menuIconHolder, style.cartMenuHolder]}>
         <TouchableOpacity 
