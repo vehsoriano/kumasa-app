@@ -91,15 +91,21 @@ function Details({ route, navigation }) {
               <Text style={styles.bannerTitle}> Rider Details</Text> 
               <View style={styles.orderDetails}>
                 <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-                  Rider Id: &nbsp;
+                  Rider Fullname: &nbsp;
                   <Text style={{fontWeight: 'normal'}}>
-                  {/* {branchParams.order_id} */}
+                  {branchParams.rider_first_name} {branchParams.rider_middle_name} {branchParams.rider_last_name}
                   </Text>
                 </Text>
                 <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
                   Rider Contact #: &nbsp;
-                  {/* Needs Data */}
+                  <Text style={{fontWeight: 'normal'}}>
+                  {branchParams.rider_phone_number} 
+                  </Text>
                 </Text>
+                {/* <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
+                  Rider Email #: &nbsp;
+                  {branchParams.rider_phone_number}
+                </Text> */}
                 <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
                   Payment method: &nbsp;
                   {/* Needs Data */}
@@ -138,13 +144,13 @@ function Details({ route, navigation }) {
 
               
             </Text>
-            <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}>
-              Landmark: &nbsp;
+            {/* <Text style={[styles.orderItemDetails, styles.itemFlexTitle]}> */}
+              {/* Landmark: &nbsp; */}
               {/* Needs Data */}
-              <Text style={{fontWeight: 'normal'}}>
+              {/* <Text style={{fontWeight: 'normal'}}> */}
                 
-              </Text>
-            </Text>
+              {/* </Text> */}
+            {/* </Text> */}
           </View>
         </View>
 
