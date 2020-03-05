@@ -108,6 +108,7 @@ function Signup({navigation}) {
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
               required
+              errorMessage={first_name.length === 0 ? '*This field is required' : ''}
               rightIcon={
                 <Icon
                   name='user'
@@ -125,6 +126,7 @@ function Signup({navigation}) {
               placeholder='Doe'
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
+              errorMessage={last_name.length === 0 ? '*This field is required' : ''}
               rightIcon={
                 <Icon
                   name='user'
@@ -142,6 +144,7 @@ function Signup({navigation}) {
               placeholder='johndoe@gmail.com'
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
+              errorMessage={email.length === 0 ? '*This field is required' : ''}
               rightIcon={
                 <Icon
                   name='envelope'
@@ -159,6 +162,7 @@ function Signup({navigation}) {
               placeholder='09XXXXXXXXX'
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
+              errorMessage={phone_number.length === 0 ? '*This field is required' : ''}
               keyboardType="numeric"
               rightIcon={
                 <Icon
@@ -178,6 +182,7 @@ function Signup({navigation}) {
               placeholder='#15-8 San Lazaro St. Marisol'
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
+              errorMessage={address.length === 0 ? '*This field is required' : ''}
               rightIcon={
                 <Icon
                   name='location-arrow'
@@ -192,11 +197,12 @@ function Signup({navigation}) {
 
           <View style={formGroup}>            
             <Input
-              label="Password"
+              label="Password (Include Capital letter/numbers)"
               placeholder='********'
               labelStyle={labelStyle}
               inputContainerStyle={formInput}
               secureTextEntry={true}
+              errorMessage={password.length === 0 ? '*This field is required' : ''}
               rightIcon={
                 <Icon
                   name='lock'

@@ -172,6 +172,7 @@ function Login({navigation}) {
             placeholder='johndoe@gmail.com'
             labelStyle={labelStyle}
             inputContainerStyle={formInput}
+            errorMessage={email.length === 0 ? '*This field is required' : ''}
             rightIcon={
               <Icon
                 name='envelope'
@@ -190,6 +191,7 @@ function Login({navigation}) {
             labelStyle={labelStyle}
             inputContainerStyle={formInput}
             secureTextEntry={true}
+            errorMessage={password.length === 0 ? '*This field is required' : ''}
             rightIcon={
               <Icon
                 name='lock'

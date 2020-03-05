@@ -15,7 +15,7 @@ const forms = StyleSheet.create({
     // borderBottomWidth: 1,
     height:45,
     // width: 300,
-    marginBottom:40,
+    marginBottom:50,
     flexDirection: 'row',
     // alignItems:'center'
   },
