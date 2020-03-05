@@ -30,6 +30,9 @@ function Payment({navigation}) {
   const [type, setType] = useState('')
   const [addressType, setAddressType] = useState('profileAddress')
   const [deliveryType, setDeliveryType] = useState('pickup')
+
+  const [otherRequest, setOtherRequest] = useState('')
+  const [reservationTime, setReservationTime] = useState('')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -77,13 +80,17 @@ function Payment({navigation}) {
     if (addressType === 'profileAddress') {
       console.log('profile')
       req = {
-        items: arr 
+        items: arr,
+        otherRequest,
+        reservationTime 
       }
     } else if(addressType === 'differentAddress') {
       console.log('different')
       req = {
         items: arr,
-        address 
+        address,
+        otherRequest,
+        reservationTime 
       }
     }
     console.log(req)    
@@ -100,6 +107,7 @@ function Payment({navigation}) {
         console.log(err)
       })
   }
+
 
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
@@ -174,6 +182,33 @@ function Payment({navigation}) {
       <Text style={[style.title, {paddingTop: 30}]}>Cart Items</Text>
       <CustomCart />
 
+
+
+      <View style={style.separator}></View>
+      <Text style={[style.title, {paddingTop: 30}]}>Other Request</Text>
+      <View style={container}>
+        <View style={formGroup}>
+          <Input
+            label="Request via availability (leave blank if none)"
+            placeholder='Can you buy me a 1 pack of cigarette'
+            labelStyle={labelStyle}
+            multiline={true}
+            numberOfLines={4}
+            inputContainerStyle={formInput}
+            rightIcon={
+              <Icon
+                name='calendar'
+                size={20}
+                color='#FCD69D'
+              />
+            }
+            onChangeText={(otherRequest) => setOtherRequest(otherRequest)}
+            value={otherRequest}
+          />
+        </View>
+      </View>
+
+
       <View style={style.separator}></View>
     
       <Text style={[style.title, {paddingTop: 20}]}>
@@ -210,8 +245,8 @@ function Payment({navigation}) {
                         color='#FCD69D'
                       />
                     }
-                    onChangeText={(address) => setAddress(address)}
-                    value={address}
+                    onChangeText={(reservationTime) => setReservationTime(reservationTime)}
+                    value={reservationTime}
                   />
                 </View>
               </View>
@@ -221,7 +256,6 @@ function Payment({navigation}) {
           )
       }
       
-
       <View style={style.separator}></View>
       <Text style={[style.title, {paddingTop: 30}]}>Payment Method</Text>
       <View style={{ flexDirection: 'row', paddingHorizontal: 20, backgroundColor: '#fff' }}>
